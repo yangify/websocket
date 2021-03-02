@@ -1,0 +1,7 @@
+server.servlet.contextPath=/api
+
+# DATABASE
+spring.datasource.url=jdbc:postgresql://localhost:5432/ColdStraw
+spring.datasource.username=postgres
+spring.datasource.password=password
+spring.jpa.hibernate.ddl-auto=create-drop
