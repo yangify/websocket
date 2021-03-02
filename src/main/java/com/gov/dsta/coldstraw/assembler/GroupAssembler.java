@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.assembler;
 
+import com.gov.dsta.coldstraw.controller.GroupController;
 import com.gov.dsta.coldstraw.controller.UserController;
 import com.gov.dsta.coldstraw.model.Group;
 import org.springframework.hateoas.CollectionModel;
@@ -18,8 +19,10 @@ public class GroupAssembler implements RepresentationModelAssembler<Group, Entit
     @Override
     public EntityModel<Group> toModel(Group group) {
         return EntityModel.of(group,
-                linkTo(methodOn(UserController.class).getUser(group.getId())).withSelfRel(),
-                linkTo(methodOn(UserController.class).getUsers()).withRel("groups"));
+                linkTo(methodOn(GroupController.class).getGroup(group.getId())).withSelfRel(),
+                linkTo(methodOn(GroupController.class).getGroups()).withRel("groups"),
+                linkTo(methodOn(GroupController.class).getUsers(group.getId())).withRel("users")
+        );
     }
 
     public CollectionModel<EntityModel<Group>> toCollectionModel(List<EntityModel<Group>> groups) {
