@@ -1,7 +1,5 @@
 package com.gov.dsta.coldstraw.model;
 
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
