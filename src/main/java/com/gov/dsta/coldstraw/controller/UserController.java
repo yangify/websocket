@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -48,13 +48,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/groups")
-    public List<Group> getUserGroups(@PathVariable Long userId) {
+    public List<Group> getGroups(@PathVariable Long userId) {
         // return all the groups the user belongs to
         return null;
     }
 
     @GetMapping("/{userId}/groups/{groupId}")
-    public Group getUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+    public Group getGroup(@PathVariable Long userId, @PathVariable Long groupId) {
         // return a specific group that a user belongs to
         return null;
     }
