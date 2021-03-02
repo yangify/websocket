@@ -1,6 +1,6 @@
 package com.gov.dsta.coldstraw.model;
 
-import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

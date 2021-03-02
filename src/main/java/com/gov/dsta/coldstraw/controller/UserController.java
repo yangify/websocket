@@ -1,31 +1,51 @@
 package com.gov.dsta.coldstraw.controller;
 
+import com.gov.dsta.coldstraw.assembler.UserAssembler;
+import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.service.UserService;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserAssembler userAssembler) {
         this.userService = userService;
+        this.userAssembler = userAssembler;
     }
 
     @GetMapping()
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public CollectionModel<EntityModel<User>> getUsers() {
+        List<User> users = userService.getUsers();
+        List<EntityModel<User>> roles = users.stream()
+                .map(userAssembler::toModel)
+                .collect(Collectors.toList());
+        return userAssembler.toCollectionModel(roles);
     }
 
     @GetMapping("/{userId}")
-    public User getUser(@PathVariable Long userId) {
-        return null;
+    public EntityModel<User> getUser(@PathVariable Long userId) {
+        try {
+            User user = userService.getUser(userId);
+            return userAssembler.toModel(user);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
     }
 
     @GetMapping("/{userId}/groups")
@@ -53,18 +73,26 @@ public class UserController {
     }
 
     @PostMapping()
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<EntityModel<User>> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        EntityModel<User> userModel = userAssembler.toModel(createdUser);
+        return ResponseEntity
+                .created(userModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(userModel);
     }
 
     @PutMapping("/{userId}")
-    public User updateUser(@PathVariable Long userId) {
-        // update one user's details
-        return null;
+    public ResponseEntity<EntityModel<User>> updateUser(@PathVariable Long userId, @RequestBody User user) {
+        User updatedRole = userService.updateUser(userId, user);
+        EntityModel<User> roleModel = userAssembler.toModel(updatedRole);
+        return ResponseEntity
+                .created(roleModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(roleModel);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }
