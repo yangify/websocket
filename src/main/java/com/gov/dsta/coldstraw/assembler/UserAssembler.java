@@ -22,7 +22,8 @@ public class UserAssembler implements RepresentationModelAssembler<User, EntityM
                 linkTo(methodOn(UserController.class).getUsers()).withRel("roles"),
                 linkTo(methodOn(UserController.class).getGroups(user.getId())).withRel("groups"),
                 linkTo(methodOn(UserController.class).getSentNotifications(user.getId())).withRel("sentNotifications"),
-                linkTo(methodOn(UserController.class).getReceivedNotifications(user.getId())).withRel("receivedNotifications"));
+                linkTo(methodOn(UserController.class).getReceivedNotifications(user.getId())).withRel("receivedNotifications")
+        );
     }
 
     public CollectionModel<EntityModel<User>> toCollectionModel(List<EntityModel<User>> roles) {

@@ -1,7 +1,9 @@
 package com.gov.dsta.coldstraw.service;
 
+import com.gov.dsta.coldstraw.exception.Group.GroupNotFoundException;
 import com.gov.dsta.coldstraw.exception.user.DuplicateUserException;
 import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
+import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,19 @@ public class UserService {
 
     public User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    public List<Group> getGroups(Long userId) {
+        User user = getUser(userId);
+        return user.getGroups();
+    }
+
+    public Group getGroup(Long userId, Long groupId) {
+        List<Group> groups = getGroups(userId);
+        return groups.stream()
+                .filter(group -> group.getId().equals(groupId))
+                .findFirst()
+                .orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
     public User createUser(User user) {

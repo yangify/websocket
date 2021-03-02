@@ -1,6 +1,8 @@
 package com.gov.dsta.coldstraw.controller;
 
+import com.gov.dsta.coldstraw.assembler.GroupAssembler;
 import com.gov.dsta.coldstraw.assembler.UserAssembler;
+import com.gov.dsta.coldstraw.exception.Group.GroupNotFoundException;
 import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.Notification;
@@ -23,10 +25,12 @@ public class UserController {
 
     private final UserService userService;
     private final UserAssembler userAssembler;
+    private final GroupAssembler groupAssembler;
 
-    public UserController(UserService userService, UserAssembler userAssembler) {
+    public UserController(UserService userService, UserAssembler userAssembler, GroupAssembler groupAssembler) {
         this.userService = userService;
         this.userAssembler = userAssembler;
+        this.groupAssembler = groupAssembler;
     }
 
     @GetMapping()
@@ -48,15 +52,21 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/groups")
-    public List<Group> getGroups(@PathVariable Long userId) {
-        // return all the groups the user belongs to
-        return null;
+    public CollectionModel<EntityModel<Group>> getGroups(@PathVariable Long userId) {
+        List<EntityModel<Group>> groups = userService.getGroups(userId).stream()
+                .map(groupAssembler::toModel)
+                .collect(Collectors.toList());
+        return groupAssembler.toCollectionModel(groups);
     }
 
     @GetMapping("/{userId}/groups/{groupId}")
-    public Group getGroup(@PathVariable Long userId, @PathVariable Long groupId) {
-        // return a specific group that a user belongs to
-        return null;
+    public EntityModel<Group> getGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+        try {
+            Group group = userService.getGroup(userId, groupId);
+            return groupAssembler.toModel(group);
+        } catch(GroupNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
     }
 
     @GetMapping("/{userId}/notifications/sent")
