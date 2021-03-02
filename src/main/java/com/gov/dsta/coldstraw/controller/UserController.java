@@ -31,11 +31,10 @@ public class UserController {
 
     @GetMapping()
     public CollectionModel<EntityModel<User>> getUsers() {
-        List<User> users = userService.getUsers();
-        List<EntityModel<User>> roles = users.stream()
+        List<EntityModel<User>> users = userService.getUsers().stream()
                 .map(userAssembler::toModel)
                 .collect(Collectors.toList());
-        return userAssembler.toCollectionModel(roles);
+        return userAssembler.toCollectionModel(users);
     }
 
     @GetMapping("/{userId}")
