@@ -2,7 +2,7 @@ package com.gov.dsta.coldstraw.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "\"group\"")
@@ -10,8 +10,8 @@ public class Group {
 
     private Long id;
     private String name;
-    private List<User> users;
-    private List<Notification> notifications;
+    private Set<User> users;
+    private Set<Notification> notifications;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,20 +33,20 @@ public class Group {
     }
 
     @ManyToMany(mappedBy = "groups")
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
     @ManyToMany(mappedBy = "groups")
-    public List<Notification> getNotifications() {
+    public Set<Notification> getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(List<Notification> notifications) {
+    public void setNotifications(Set<Notification> notifications) {
         this.notifications = notifications;
     }
 }

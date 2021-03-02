@@ -1,72 +1,102 @@
 package com.gov.dsta.coldstraw.controller;
 
-import com.gov.dsta.coldstraw.service.GroupService;
+import com.gov.dsta.coldstraw.assembler.GroupAssembler;
+import com.gov.dsta.coldstraw.assembler.UserAssembler;
+import com.gov.dsta.coldstraw.exception.Group.GroupNotFoundException;
+import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
+import com.gov.dsta.coldstraw.service.GroupService;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/groups")
 public class GroupController {
 
     private final GroupService groupService;
+    private final GroupAssembler groupAssembler;
+    private final UserAssembler userAssembler;
 
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService, GroupAssembler groupAssembler, UserAssembler userAssembler) {
         this.groupService = groupService;
+        this.groupAssembler = groupAssembler;
+        this.userAssembler = userAssembler;
     }
 
     @GetMapping()
-    public List<Group> getGroups() {
-        // return all groups
-        return groupService.getGroups();
+    public CollectionModel<EntityModel<Group>> getGroups() {
+        List<EntityModel<Group>> groups = groupService.getGroups().stream()
+                .map(groupAssembler::toModel)
+                .collect(Collectors.toList());
+        return groupAssembler.toCollectionModel(groups);
     }
 
     @GetMapping("/{groupId}")
-    public Group getGroup(@PathVariable Long groupId) {
-        // return a single group
-        return null;
+    public EntityModel<Group> getGroup(@PathVariable Long groupId) {
+        try {
+            Group group = groupService.getGroup(groupId);
+            return groupAssembler.toModel(group);
+        } catch (GroupNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
     }
 
     @PostMapping()
-    public Group createGroup(@RequestBody Group group) {
-        // create a group
-        return null;
+    public ResponseEntity<EntityModel<Group>> createGroup(@RequestBody Group group) {
+        Group createdGroup = groupService.createGroup(group);
+        EntityModel<Group> groupModel = groupAssembler.toModel(createdGroup);
+        return ResponseEntity
+                .created(groupModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(groupModel);
     }
 
     @PutMapping("/{groupId}")
-    public Group updateGroup(@RequestBody Group group) {
-        // change name
-        // change users
+    public Group updateGroup(@PathVariable String groupId, @RequestBody Group group) {
         return null;
     }
 
     @DeleteMapping("/{groupId}")
-    public void deleteGroup(@PathVariable Long groupId) {
-        // delete a single group
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+        groupService.deleteGroup(groupId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{groupId}/users")
-    public List<User> getUsers(@PathVariable Long groupId) {
-        // get all users of a single group
-        return null;
+    public CollectionModel<EntityModel<User>> getUsers(@PathVariable Long groupId) {
+        List<EntityModel<User>> users = groupService.getUsers(groupId).stream()
+                .map(userAssembler::toModel)
+                .collect(Collectors.toList());
+        return userAssembler.toCollectionModel(users);
     }
 
     @GetMapping("/{groupId}/users/{userId}")
-    public User getUser(@PathVariable Long groupId, @PathVariable Long userId) {
-        // get a single user from a single group, maybe null
-        return null;
+    public EntityModel<User> getUser(@PathVariable Long groupId, @PathVariable Long userId) {
+        try {
+            User user = groupService.getUser(groupId, userId);
+            return userAssembler.toModel(user);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
     }
 
     @PostMapping("/{groupId}/users")
-    public Group addUser(@PathVariable Long groupId, @RequestBody User user) {
-        // add a single user to a single group
+    public User addUser(@PathVariable Long groupId, @RequestBody User user) {
+//        User userAdded = groupService.addUser(groupId, user);
         return null;
     }
 
     @DeleteMapping("/{groupId}/users/{userId}")
-    public void deleteUser(@PathVariable Long groupId, @PathVariable Long userId) {
-        // delete a single user from a single group
+    public ResponseEntity<Void> deleteUser(@PathVariable Long groupId, @PathVariable Long userId) {
+        groupService.deleteUser(groupId, userId);
+        return ResponseEntity.noContent().build();
     }
 }
