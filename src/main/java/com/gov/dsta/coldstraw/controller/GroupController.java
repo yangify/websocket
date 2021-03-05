@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/groups")
+@RequestMapping("/v1/groups")
 public class GroupController {
 
     private final GroupService groupService;

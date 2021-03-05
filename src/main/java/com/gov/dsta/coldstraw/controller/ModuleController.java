@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/modules")
+@RequestMapping("/v1/modules")
 public class ModuleController {
 
     @GetMapping()
