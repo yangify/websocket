@@ -1,6 +1,7 @@
 package com.gov.dsta.coldstraw.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,7 +38,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     public List<Group> getGroups() {
         return groups;

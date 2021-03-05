@@ -1,7 +1,5 @@
 package com.gov.dsta.coldstraw.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -34,7 +32,6 @@ public class Group {
         this.name = name;
     }
 
-    @JsonManagedReference
     @ManyToMany()
     @JoinTable(
             name = "user_group",
