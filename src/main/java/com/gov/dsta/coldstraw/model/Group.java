@@ -34,12 +34,12 @@ public class Group {
         this.name = name;
     }
 
-    @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
     @ManyToMany()
     @JoinTable(
             name = "user_group",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
     public Set<User> getUsers() {
         return users;
     }

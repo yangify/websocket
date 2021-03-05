@@ -37,8 +37,8 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    @JsonIgnoreProperties({"users", "notifications"})
     @ManyToMany(mappedBy = "users")
+    @JsonIgnoreProperties({"users", "notifications"})
     public List<Group> getGroups() {
         return groups;
     }
