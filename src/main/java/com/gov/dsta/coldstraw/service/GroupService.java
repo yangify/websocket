@@ -5,6 +5,7 @@ import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.GroupRepository;
+import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,13 @@ import java.util.stream.Collectors;
 @Service
 public class GroupService {
 
+    private final UserService userService;
+    private final UserRepository userRepository;
     private final GroupRepository groupRepository;
 
-    public GroupService(GroupRepository groupRepository) {
+    public GroupService(UserService userService, UserRepository userRepository, GroupRepository groupRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
         this.groupRepository = groupRepository;
     }
 
@@ -42,6 +47,17 @@ public class GroupService {
     }
 
     public Group createGroup(Group group) {
+        return groupRepository.save(group);
+    }
+
+    public Group addUser(Long groupId, Long userId) {
+        Group group = getGroup(groupId);
+        User user = userService.getUser(userId);
+
+        group.addUser(user);
+        user.addGroup(group);
+
+        userRepository.save(user);
         return groupRepository.save(group);
     }
 
