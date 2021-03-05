@@ -77,10 +77,9 @@ public class GroupController {
                 .body(groupModel);
     }
 
-    @PostMapping("/{groupId}/users")
-    public User addUser(@PathVariable Long groupId, @RequestBody User user) {
-//        User userAdded = groupService.addUser(groupId, user);
-        return null;
+    @PostMapping("/{groupId}/users/{userId}")
+    public Group addUser(@PathVariable Long groupId, @PathVariable Long userId) {
+        return groupService.addUser(groupId, userId);
     }
 
     @PutMapping("/{groupId}")

@@ -1,5 +1,7 @@
 package com.gov.dsta.coldstraw.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -32,13 +34,22 @@ public class Group {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "groups")
+    @JsonManagedReference
+    @ManyToMany()
+    @JoinTable(
+            name = "user_group",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     public Set<User> getUsers() {
         return users;
     }
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public void addUser(User user) {
+        users.add(user);
     }
 
     @ManyToMany(mappedBy = "groups")

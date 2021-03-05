@@ -1,5 +1,7 @@
 package com.gov.dsta.coldstraw.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -35,17 +37,18 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    @ManyToMany()
-    @JoinTable(
-            name = "user_group",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @JsonBackReference
+    @ManyToMany(mappedBy = "users")
     public List<Group> getGroups() {
         return groups;
     }
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    public void addGroup(Group group) {
+        this.groups.add(group);
     }
 
     @OneToMany(mappedBy = "sender")
