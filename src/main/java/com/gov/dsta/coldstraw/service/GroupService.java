@@ -8,6 +8,7 @@ import com.gov.dsta.coldstraw.repository.GroupRepository;
 import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,10 +66,17 @@ public class GroupService {
         groupRepository.deleteById(groupId);
     }
 
-    public void deleteUser(Long groupId, Long userId) {
+    public void deleteAllUserFromGroup(Long groupId) {
+        Group group = getGroup(groupId);
+        group.setUsers(new HashSet<>());
+        groupRepository.save(group);
+    }
 
-        userService.deleteGroup(userId, groupId);
+    public void deleteUserFromGroups(Long userId) {
+        getGroups().forEach(group -> deleteUserFromGroup(group.getId(), userId));
+    }
 
+    public void deleteUserFromGroup(Long groupId, Long userId) {
         Group group = getGroup(groupId);
         Set<User> users = group.getUsers()
                 .stream()

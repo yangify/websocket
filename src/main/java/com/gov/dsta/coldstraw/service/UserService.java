@@ -5,11 +5,13 @@ import com.gov.dsta.coldstraw.exception.user.DuplicateUserException;
 import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
+import com.gov.dsta.coldstraw.repository.GroupRepository;
 import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,13 +31,13 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    public List<Group> getGroups(Long userId) {
+    public List<Group> getUserGroups(Long userId) {
         User user = getUser(userId);
         return user.getGroups();
     }
 
-    public Group getGroup(Long userId, Long groupId) {
-        List<Group> groups = getGroups(userId);
+    public Group getUserGroup(Long userId, Long groupId) {
+        List<Group> groups = getUserGroups(userId);
         return groups.stream()
                 .filter(group -> group.getId().equals(groupId))
                 .findFirst()
@@ -60,14 +62,6 @@ public class UserService {
 
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-    }
-
-    public void deleteGroup(Long userId, Long groupId) {
-        User user = getUser(userId);
-        List<Group> groups = user.getGroups().stream()
-                .filter(group -> group.getId().equals(groupId))
-                .collect(Collectors.toList());
-        user.setGroups(groups);
     }
 
     private void checkForDuplicate(User user) {

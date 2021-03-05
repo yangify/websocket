@@ -93,9 +93,15 @@ public class GroupController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{groupId}/users")
+    public ResponseEntity<Void> deleteAllUserFromGroup(@PathVariable Long groupId) {
+        groupService.deleteAllUserFromGroup(groupId);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{groupId}/users/{userId}")
     public ResponseEntity<Void> deleteUserFromGroup(@PathVariable Long groupId, @PathVariable Long userId) {
-        groupService.deleteUser(groupId, userId);
+        groupService.deleteUserFromGroup(groupId, userId);
         return ResponseEntity.noContent().build();
     }
 }
