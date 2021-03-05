@@ -1,6 +1,8 @@
 package com.gov.dsta.coldstraw.controller;
 
 import com.gov.dsta.coldstraw.model.Module;
+import com.gov.dsta.coldstraw.model.Notification;
+import com.gov.dsta.coldstraw.service.ModuleService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,22 +11,30 @@ import java.util.List;
 @RequestMapping("/v1/modules")
 public class ModuleController {
 
+    private final ModuleService moduleService;
+
+    public ModuleController(ModuleService moduleService) {
+        this.moduleService = moduleService;
+    }
+
     @GetMapping()
     public List<Module> getModules() {
-        // return all modules
-        return null;
+        return moduleService.getModules();
     }
 
     @GetMapping("/{moduleId}")
     public Module getModule(@PathVariable Long moduleId) {
-        // return a specific module
-        return null;
+        return moduleService.getModule(moduleId);
+    }
+
+    @GetMapping("/{moduleId}/notifications")
+    public List<Notification> getModuleNotifications(@PathVariable Long moduleId) {
+        return moduleService.getNotifications(moduleId);
     }
 
     @PostMapping()
     public Module createModule(@RequestBody Module module) {
-        // create a new module
-        return null;
+        return moduleService.addModule(module);
     }
 
     @PutMapping("/{moduleId}")
@@ -35,6 +45,6 @@ public class ModuleController {
 
     @DeleteMapping("/{moduleId}")
     public void deleteModule(@PathVariable Long moduleId) {
-        // delete a specific module
+        moduleService.deleteModule(moduleId);
     }
 }

@@ -2,7 +2,6 @@ package com.gov.dsta.coldstraw.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.net.URL;
 import java.util.List;
 
 @Entity
@@ -10,7 +9,6 @@ public class Module {
 
     private Long id;
     private String name;
-    private URL baseUrl;
     private List<Notification> notifications;
 
     @Id
@@ -30,15 +28,6 @@ public class Module {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @NotNull
-    public URL getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(URL baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     @OneToMany(mappedBy = "module")
