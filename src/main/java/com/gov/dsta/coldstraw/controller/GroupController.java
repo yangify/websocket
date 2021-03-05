@@ -50,26 +50,6 @@ public class GroupController {
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<EntityModel<Group>> createGroup(@RequestBody Group group) {
-        Group createdGroup = groupService.createGroup(group);
-        EntityModel<Group> groupModel = groupAssembler.toModel(createdGroup);
-        return ResponseEntity
-                .created(groupModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(groupModel);
-    }
-
-    @PutMapping("/{groupId}")
-    public Group updateGroup(@PathVariable String groupId, @RequestBody Group group) {
-        return null;
-    }
-
-    @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
-        groupService.deleteGroup(groupId);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/{groupId}/users")
     public CollectionModel<EntityModel<User>> getUsers(@PathVariable Long groupId) {
         List<EntityModel<User>> users = groupService.getUsers(groupId).stream()
@@ -88,10 +68,30 @@ public class GroupController {
         }
     }
 
+    @PostMapping()
+    public ResponseEntity<EntityModel<Group>> createGroup(@RequestBody Group group) {
+        Group createdGroup = groupService.createGroup(group);
+        EntityModel<Group> groupModel = groupAssembler.toModel(createdGroup);
+        return ResponseEntity
+                .created(groupModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(groupModel);
+    }
+
     @PostMapping("/{groupId}/users")
     public User addUser(@PathVariable Long groupId, @RequestBody User user) {
 //        User userAdded = groupService.addUser(groupId, user);
         return null;
+    }
+
+    @PutMapping("/{groupId}")
+    public Group updateGroup(@PathVariable String groupId, @RequestBody Group group) {
+        return null;
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+        groupService.deleteGroup(groupId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{groupId}/users/{userId}")

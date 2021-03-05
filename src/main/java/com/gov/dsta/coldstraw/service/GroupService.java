@@ -42,7 +42,7 @@ public class GroupService {
     }
 
     public Group createGroup(Group group) {
-        return null;
+        return groupRepository.save(group);
     }
 
     public void deleteGroup(Long groupId) {
