@@ -1,7 +1,6 @@
 package com.gov.dsta.coldstraw.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "\"user\"")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User implements Serializable {
 
     private Long id;
@@ -39,6 +37,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    @JsonIgnoreProperties({"users", "notifications"})
     @ManyToMany(mappedBy = "users")
     public List<Group> getGroups() {
         return groups;

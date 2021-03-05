@@ -1,7 +1,6 @@
 package com.gov.dsta.coldstraw.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,7 +8,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "\"group\"")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Group {
 
     private Long id;
@@ -36,6 +34,7 @@ public class Group {
         this.name = name;
     }
 
+    @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
     @ManyToMany()
     @JoinTable(
             name = "user_group",
