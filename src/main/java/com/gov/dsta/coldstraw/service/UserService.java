@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -59,6 +60,14 @@ public class UserService {
 
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    public void deleteGroup(Long userId, Long groupId) {
+        User user = getUser(userId);
+        List<Group> groups = user.getGroups().stream()
+                .filter(group -> group.getId().equals(groupId))
+                .collect(Collectors.toList());
+        user.setGroups(groups);
     }
 
     private void checkForDuplicate(User user) {

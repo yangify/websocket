@@ -66,6 +66,9 @@ public class GroupService {
     }
 
     public void deleteUser(Long groupId, Long userId) {
+
+        userService.deleteGroup(userId, groupId);
+
         Group group = getGroup(groupId);
         Set<User> users = group.getUsers()
                 .stream()
