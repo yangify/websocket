@@ -104,20 +104,18 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        groupService.deleteUserFromGroups(userId);
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
-    //TODO
     @DeleteMapping("/{userId}/groups")
-    public ResponseEntity<Void> deleteAllGroupFromUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUserGroups(@PathVariable Long userId) {
         return ResponseEntity.noContent().build();
     }
 
     //TODO
     @DeleteMapping("/{userId}/groups/{groupId}")
-    public ResponseEntity<Void> deleteGroupFromUser(@PathVariable Long userId, @PathVariable Long groupId) {
+    public ResponseEntity<Void> deleteUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
         return ResponseEntity.noContent().build();
     }
 }

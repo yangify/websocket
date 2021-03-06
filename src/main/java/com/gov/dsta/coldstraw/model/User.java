@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,9 +14,9 @@ public class User implements Serializable {
 
     private Long id;
     private String name;
-    private Set<Group> groups;
-    private Set<Notification> notificationsSent;
-    private Set<ReceiverNotification> notificationsReceived;
+    private Set<Group> groups = new HashSet<>();
+    private Set<Notification> notificationsSent = new HashSet<>();
+    private Set<ReceiverNotification> notificationsReceived = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,10 +48,6 @@ public class User implements Serializable {
         this.groups = groups;
     }
 
-    public void addGroup(Group group) {
-        this.groups.add(group);
-    }
-
     @OneToMany(mappedBy = "sender")
     public Set<Notification> getNotificationsSent() {
         return notificationsSent;
@@ -67,5 +64,10 @@ public class User implements Serializable {
 
     public void setNotificationsReceived(Set<ReceiverNotification> receiverNotifications) {
         this.notificationsReceived = receiverNotifications;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof User && ((User) object).getId().equals(this.id);
     }
 }

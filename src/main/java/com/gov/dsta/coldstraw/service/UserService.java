@@ -8,10 +8,10 @@ import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -64,13 +64,17 @@ public class UserService {
 
     // DELETE
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-    }
-
-    public void deleteAllGroupFromUser(Long userId) {
         User user = getUser(userId);
-        user.setGroups(new HashSet<>());
+        Set<Group> groups = user.getGroups();
+        groups.forEach(group -> {
+            Set<User> users = group.getUsers()
+                    .stream()
+                    .filter(u -> !u.getId().equals(userId))
+                    .collect(Collectors.toSet());
+            group.setUsers(users);
+        });
         userRepository.save(user);
+        userRepository.deleteById(userId);
     }
 
     // UTILITY

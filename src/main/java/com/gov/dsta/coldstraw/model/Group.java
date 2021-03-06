@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,8 +13,8 @@ public class Group {
 
     private Long id;
     private String name;
-    private Set<User> users;
-    private Set<Notification> notifications;
+    private Set<User> users = new HashSet<>();
+    private Set<Notification> notifications = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +27,7 @@ public class Group {
     }
 
     @NotNull
+    @Column(unique = true)
     public String getName() {
         return name;
     }
@@ -34,11 +36,11 @@ public class Group {
         this.name = name;
     }
 
-    @ManyToMany()
     @JoinTable(
             name = "user_group",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany()
     @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
     public Set<User> getUsers() {
         return users;
@@ -48,10 +50,6 @@ public class Group {
         this.users = users;
     }
 
-    public void addUser(User user) {
-        users.add(user);
-    }
-
     @ManyToMany(mappedBy = "groups")
     public Set<Notification> getNotifications() {
         return notifications;
@@ -59,5 +57,10 @@ public class Group {
 
     public void setNotifications(Set<Notification> notifications) {
         this.notifications = notifications;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Group && ((Group) object).getId().equals(this.id);
     }
 }

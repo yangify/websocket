@@ -9,6 +9,7 @@ import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,8 +56,8 @@ public class GroupService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Group group = getGroup(groupId);
 
-        group.addUser(user);
-        user.addGroup(group);
+        group.getUsers().add(user);
+        user.getGroups().add(group);
 
         userRepository.save(user);
         return groupRepository.save(group);
@@ -64,27 +65,17 @@ public class GroupService {
 
     // DELETE
     public void deleteGroup(Long groupId) {
-        deleteGroupUsers(groupId);
+        Group group = getGroup(groupId);
+        Set<User> users = group.getUsers();
+        users.forEach(user -> {
+            Set<Group> groups = user
+                    .getGroups()
+                    .stream()
+                    .filter(g -> !g.getId().equals(groupId))
+                    .collect(Collectors.toSet());
+            user.setGroups(groups);
+        });
+        groupRepository.save(group);
         groupRepository.deleteById(groupId);
-    }
-
-    public void deleteGroupUsers(Long groupId) {
-        Group group = getGroup(groupId);
-        group.setUsers(new HashSet<>());
-        groupRepository.save(group);
-    }
-
-    public void deleteUserFromAllGroup(Long userId) {
-        getGroups().forEach(group -> deleteUser(group.getId(), userId));
-    }
-
-    public void deleteUser(Long groupId, Long userId) {
-        Group group = getGroup(groupId);
-        Set<User> users = group.getUsers()
-                .stream()
-                .filter(user -> !user.getId().equals(userId))
-                .collect(Collectors.toSet());
-        group.setUsers(users);
-        groupRepository.save(group);
     }
 }
