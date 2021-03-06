@@ -48,6 +48,17 @@ public class User implements Serializable {
         this.groups = groups;
     }
 
+    public void addGroup(Group group) {
+        this.groups.add(group);
+        group.addUser(this);
+    }
+
+    public void removeGroup(Group group) {
+        if (!groups.contains(group)) return;
+        this.groups.remove(group);
+        group.removeUser(this);
+    }
+
     @OneToMany(mappedBy = "sender")
     public Set<Notification> getNotificationsSent() {
         return notificationsSent;

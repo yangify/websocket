@@ -99,12 +99,13 @@ public class UserController {
 
     @DeleteMapping("/{userId}/groups")
     public ResponseEntity<Void> deleteUserGroups(@PathVariable Long userId) {
+        userService.deleteUserGroups(userId);
         return ResponseEntity.noContent().build();
     }
 
-    //TODO
     @DeleteMapping("/{userId}/groups/{groupId}")
     public ResponseEntity<Void> deleteUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+        userService.deleteUserGroup(userId, groupId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -50,6 +50,17 @@ public class Group {
         this.users = users;
     }
 
+    public void addUser(User user) {
+        if (!users.contains(user)) this.users.add(user);
+        user.addGroup(this);
+    }
+
+    public void removeUser(User user) {
+        if (!users.contains(user)) return;
+        this.users.remove(user);
+        user.removeGroup(this);
+    }
+
     @ManyToMany(mappedBy = "groups")
     public Set<Notification> getNotifications() {
         return notifications;
