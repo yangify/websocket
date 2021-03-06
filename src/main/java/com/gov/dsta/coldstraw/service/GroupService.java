@@ -65,29 +65,21 @@ public class GroupService {
 
     // DELETE
     public void deleteGroup(Long groupId) {
-        Group group = getGroup(groupId);
-        Set<User> users = group.getUsers();
-        users.forEach(user -> {
-            Set<Group> groups = user
-                    .getGroups()
-                    .stream()
-                    .filter(g -> !g.getId().equals(groupId))
-                    .collect(Collectors.toSet());
-            user.setGroups(groups);
-        });
-        groupRepository.save(group);
+        deleteGroupUsers(groupId);
         groupRepository.deleteById(groupId);
     }
 
     public void deleteGroupUsers(Long groupId) {
         Group group = getGroup(groupId);
-        group.setUsers(new HashSet<>());
+        Set<User> users = group.getUsers();
+        users.forEach(user -> deleteGroupUser(groupId, user.getId()));
         groupRepository.save(group);
     }
 
     public void deleteGroupUser(Long groupId, Long userId) {
         Group group = getGroup(groupId);
-        Set<User> users = group.getUsers()
+        Set<User> users = group
+                .getUsers()
                 .stream()
                 .filter(user -> !user.getId().equals(userId))
                 .collect(Collectors.toSet());
