@@ -78,7 +78,7 @@ public class GroupController {
     }
 
     @PostMapping("/{groupId}/users")
-    public Group addUserToGroup(@PathVariable Long groupId, @RequestBody Long userId) {
+    public Group addUser(@PathVariable Long groupId, @RequestBody Long userId) {
         return groupService.addUser(groupId, userId);
     }
 
@@ -94,14 +94,14 @@ public class GroupController {
     }
 
     @DeleteMapping("/{groupId}/users")
-    public ResponseEntity<Void> deleteAllUserFromGroup(@PathVariable Long groupId) {
-        groupService.deleteAllUserFromGroup(groupId);
+    public ResponseEntity<Void> deleteGroupUsers(@PathVariable Long groupId) {
+        groupService.deleteGroupUsers(groupId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{groupId}/users/{userId}")
-    public ResponseEntity<Void> deleteUserFromGroup(@PathVariable Long groupId, @PathVariable Long userId) {
-        groupService.deleteUserFromGroup(groupId, userId);
+    public ResponseEntity<Void> deleteGroupUser(@PathVariable Long groupId, @PathVariable Long userId) {
+        groupService.deleteUser(groupId, userId);
         return ResponseEntity.noContent().build();
     }
 }

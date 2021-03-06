@@ -24,6 +24,7 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
+    // GET
     public List<Group> getGroups() {
         return (List<Group>) groupRepository.findAll();
     }
@@ -45,12 +46,12 @@ public class GroupService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    // POST
     public Group createGroup(Group group) {
         return groupRepository.save(group);
     }
 
     public Group addUser(Long groupId, Long userId) {
-
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Group group = getGroup(groupId);
 
@@ -61,21 +62,23 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    // DELETE
     public void deleteGroup(Long groupId) {
+        deleteGroupUsers(groupId);
         groupRepository.deleteById(groupId);
     }
 
-    public void deleteAllUserFromGroup(Long groupId) {
+    public void deleteGroupUsers(Long groupId) {
         Group group = getGroup(groupId);
         group.setUsers(new HashSet<>());
         groupRepository.save(group);
     }
 
-    public void deleteUserFromGroups(Long userId) {
-        getGroups().forEach(group -> deleteUserFromGroup(group.getId(), userId));
+    public void deleteUserFromAllGroup(Long userId) {
+        getGroups().forEach(group -> deleteUser(group.getId(), userId));
     }
 
-    public void deleteUserFromGroup(Long groupId, Long userId) {
+    public void deleteUser(Long groupId, Long userId) {
         Group group = getGroup(groupId);
         Set<User> users = group.getUsers()
                 .stream()
