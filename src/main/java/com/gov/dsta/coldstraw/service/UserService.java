@@ -67,6 +67,13 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    public void deleteAllGroupFromUser(Long userId) {
+        User user = getUser(userId);
+        user.setGroups(new HashSet<>());
+        userRepository.save(user);
+    }
+
+    // UTILITY
     private void checkForDuplicate(User user) {
         Optional<User> roleFromDB = userRepository.findByName(user.getName());
         roleFromDB.ifPresent(duplicateRole -> {
