@@ -82,8 +82,8 @@ public class UserController {
                 .body(userModel);
     }
 
-    @PutMapping("/{userId}/groups/{groupId}")
-    public ResponseEntity<EntityModel<User>> addGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+    @PutMapping("/{userId}/groups")
+    public ResponseEntity<EntityModel<User>> addGroup(@PathVariable Long userId, @RequestParam Long groupId) {
         User user = userService.addGroup(userId, groupId);
         EntityModel<User> userModel = userAssembler.toModel(user);
         return ResponseEntity
