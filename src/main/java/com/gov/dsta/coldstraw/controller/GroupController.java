@@ -95,11 +95,13 @@ public class GroupController {
 
     @DeleteMapping("/{groupId}/users")
     public ResponseEntity<Void> deleteGroupUsers(@PathVariable Long groupId) {
+        groupService.deleteGroupUsers(groupId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{groupId}/users/{userId}")
     public ResponseEntity<Void> deleteGroupUser(@PathVariable Long groupId, @PathVariable Long userId) {
+        groupService.deleteGroupUser(groupId, userId);
         return ResponseEntity.noContent().build();
     }
 }

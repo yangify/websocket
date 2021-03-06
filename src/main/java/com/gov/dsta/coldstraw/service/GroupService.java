@@ -78,4 +78,20 @@ public class GroupService {
         groupRepository.save(group);
         groupRepository.deleteById(groupId);
     }
+
+    public void deleteGroupUsers(Long groupId) {
+        Group group = getGroup(groupId);
+        group.setUsers(new HashSet<>());
+        groupRepository.save(group);
+    }
+
+    public void deleteGroupUser(Long groupId, Long userId) {
+        Group group = getGroup(groupId);
+        Set<User> users = group.getUsers()
+                .stream()
+                .filter(user -> !user.getId().equals(userId))
+                .collect(Collectors.toSet());
+        group.setUsers(users);
+        groupRepository.save(group);
+    }
 }
