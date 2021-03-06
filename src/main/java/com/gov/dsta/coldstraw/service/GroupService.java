@@ -5,11 +5,9 @@ import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.GroupRepository;
-import com.gov.dsta.coldstraw.repository.UserRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,11 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class GroupService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final GroupRepository groupRepository;
 
-    public GroupService(UserRepository userRepository, GroupRepository groupRepository) {
-        this.userRepository = userRepository;
+    public GroupService(@Lazy UserService userService, GroupRepository groupRepository) {
+        this.userService = userService;
         this.groupRepository = groupRepository;
     }
 
@@ -52,14 +50,11 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    // PUT
     public Group addUser(Long groupId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = userService.getUser(userId);
         Group group = getGroup(groupId);
-
-        group.getUsers().add(user);
-        user.getGroups().add(group);
-
-        userRepository.save(user);
+        group.addUser(user);
         return groupRepository.save(group);
     }
 
