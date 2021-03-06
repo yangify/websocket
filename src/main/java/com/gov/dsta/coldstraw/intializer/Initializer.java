@@ -38,13 +38,17 @@ public class Initializer implements CommandLineRunner {
     }
 
     public void initializeGroup() {
-        Group group = new Group();
-        group.setName("Cartoon");
-
         Collection<User> users = (Collection<User>) userRepository.findAll();
         Set<User> userSet = new HashSet<>(users);
-        group.setUsers(userSet);
 
-        groupRepository.save(group);
+        Group cartoonGroup = new Group();
+        cartoonGroup.setName("Cartoon");
+        cartoonGroup.setUsers(userSet);
+        groupRepository.save(cartoonGroup);
+
+        Group oldGroup = new Group();
+        oldGroup.setName("Old");
+        oldGroup.setUsers(userSet);
+        groupRepository.save(oldGroup);
     }
 }
