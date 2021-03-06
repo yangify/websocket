@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "\"user\"")
@@ -13,9 +13,9 @@ public class User implements Serializable {
 
     private Long id;
     private String name;
-    private List<Group> groups;
-    private List<Notification> notificationsSent;
-    private List<ReceiverNotification> notificationsReceived;
+    private Set<Group> groups;
+    private Set<Notification> notificationsSent;
+    private Set<ReceiverNotification> notificationsReceived;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,11 +39,11 @@ public class User implements Serializable {
 
     @ManyToMany(mappedBy = "users")
     @JsonIgnoreProperties({"users", "notifications"})
-    public List<Group> getGroups() {
+    public Set<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
@@ -52,20 +52,20 @@ public class User implements Serializable {
     }
 
     @OneToMany(mappedBy = "sender")
-    public List<Notification> getNotificationsSent() {
+    public Set<Notification> getNotificationsSent() {
         return notificationsSent;
     }
 
-    public void setNotificationsSent(List<Notification> notificationsSent) {
+    public void setNotificationsSent(Set<Notification> notificationsSent) {
         this.notificationsSent = notificationsSent;
     }
 
     @OneToMany(mappedBy = "primaryKey.notification")
-    public List<ReceiverNotification> getNotificationsReceived() {
+    public Set<ReceiverNotification> getNotificationsReceived() {
         return notificationsReceived;
     }
 
-    public void setNotificationsReceived(List<ReceiverNotification> receiverNotifications) {
+    public void setNotificationsReceived(Set<ReceiverNotification> receiverNotifications) {
         this.notificationsReceived = receiverNotifications;
     }
 }
