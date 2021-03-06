@@ -6,6 +6,7 @@ import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.UserRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    private final GroupService groupService;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(@Lazy GroupService groupService, UserRepository userRepository) {
+        this.groupService = groupService;
         this.userRepository = userRepository;
     }
 
@@ -50,6 +53,13 @@ public class UserService {
     }
 
     // PUT
+    public User addGroup(Long userId, Long groupId) {
+        User user = getUser(userId);
+        Group group = groupService.getGroup(groupId);
+        user.addGroup(group);
+        return userRepository.save(user);
+    }
+
     public User updateUser(Long userId, User newUser) {
         return userRepository.findById(userId)
                 .map(user -> {
@@ -76,6 +86,7 @@ public class UserService {
     }
 
     public void deleteUserGroup(Long userId, Long groupId) {
+        groupService.deleteGroupUser(groupId, userId);
         User user = getUser(userId);
         Set<Group> groups = user
                 .getGroups()

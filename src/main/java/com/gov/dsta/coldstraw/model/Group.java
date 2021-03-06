@@ -51,7 +51,8 @@ public class Group {
     }
 
     public void addUser(User user) {
-        if (!users.contains(user)) this.users.add(user);
+        if (users.contains(user)) return;
+        this.users.add(user);
         user.addGroup(this);
     }
 

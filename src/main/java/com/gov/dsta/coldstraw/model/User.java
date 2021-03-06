@@ -49,6 +49,7 @@ public class User implements Serializable {
     }
 
     public void addGroup(Group group) {
+        if (groups.contains(group)) return;
         this.groups.add(group);
         group.addUser(this);
     }

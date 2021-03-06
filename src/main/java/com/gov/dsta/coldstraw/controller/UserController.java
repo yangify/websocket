@@ -82,6 +82,15 @@ public class UserController {
                 .body(userModel);
     }
 
+    @PutMapping("/{userId}/groups/{groupId}")
+    public ResponseEntity<EntityModel<User>> addGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+        User user = userService.addGroup(userId, groupId);
+        EntityModel<User> userModel = userAssembler.toModel(user);
+        return ResponseEntity
+                .created(userModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(userModel);
+    }
+
     @PutMapping("/{userId}")
     public ResponseEntity<EntityModel<User>> updateUser(@PathVariable Long userId, @RequestBody User user) {
         User updatedRole = userService.updateUser(userId, user);
