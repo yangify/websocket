@@ -80,7 +80,7 @@ public class GroupService {
         Group group = getGroup(groupId);
         Set<User> users = group.getUsers()
                 .stream()
-                .filter(user -> user.getId().equals(userId))
+                .filter(user -> !user.getId().equals(userId))
                 .collect(Collectors.toSet());
         group.setUsers(users);
         groupRepository.save(group);
