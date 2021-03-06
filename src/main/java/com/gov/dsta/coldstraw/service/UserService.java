@@ -9,11 +9,9 @@ import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -80,8 +78,8 @@ public class UserService {
     }
 
     public void deleteUserGroup(Long userId, Long groupId) {
-        Group group = groupService.getGroup(groupId);
         User user = getUser(userId);
+        Group group = groupService.getGroup(groupId);
         user.removeGroup(group);
         userRepository.save(user);
     }
