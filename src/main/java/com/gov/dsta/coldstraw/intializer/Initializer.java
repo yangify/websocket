@@ -1,13 +1,16 @@
 package com.gov.dsta.coldstraw.intializer;
 
 import com.gov.dsta.coldstraw.model.Group;
+import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.GroupRepository;
+import com.gov.dsta.coldstraw.repository.NotificationRepository;
 import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -17,16 +20,19 @@ public class Initializer implements CommandLineRunner {
 
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
-    public Initializer(GroupRepository groupRepository, UserRepository userRepository) {
+    public Initializer(GroupRepository groupRepository, UserRepository userRepository, NotificationRepository notificationRepository) {
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     @Override
     public void run(String... args) {
         initializeUsers();
         initializeGroup();
+        initializeNotification();
     }
 
     public void initializeUsers() {
@@ -50,5 +56,26 @@ public class Initializer implements CommandLineRunner {
         oldGroup.setName("Old");
         oldGroup.setUsers(userSet);
         groupRepository.save(oldGroup);
+    }
+
+    public void initializeNotification() {
+        Notification today = new Notification();
+        today.setMessage("today");
+        notificationRepository.save(today);
+
+        Notification yesterday = new Notification();
+        yesterday.setMessage("yesterday");
+        yesterday.setDate(new Date(System.currentTimeMillis()-24*60*60*1000));
+        notificationRepository.save(yesterday);
+
+        Notification lastWeek = new Notification();
+        lastWeek.setMessage("last week");
+        lastWeek.setDate(new Date(System.currentTimeMillis()-5*24*60*60*1000));
+        notificationRepository.save(lastWeek);
+
+        Notification longLongTimeAgo = new Notification();
+        longLongTimeAgo.setMessage("long long time ago");
+        longLongTimeAgo.setDate(new Date(System.currentTimeMillis()-14*24*60*60*1000));
+        notificationRepository.save(longLongTimeAgo);
     }
 }
