@@ -1,5 +1,7 @@
 package com.gov.dsta.coldstraw.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -40,6 +42,7 @@ public class Notification implements Serializable {
 
 //    @NotNull
     @ManyToOne()
+    @JsonIgnoreProperties({"id", "groups", "notificationsSent", "notificationsReceived"})
     public User getSender() {
         return sender;
     }

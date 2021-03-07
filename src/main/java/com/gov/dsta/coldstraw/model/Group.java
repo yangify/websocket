@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "\"group\"")
+@JsonIgnoreProperties("id")
 public class Group {
 
     private UUID id;

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "\"user\"")
+@JsonIgnoreProperties("id")
 public class User implements Serializable {
 
     private UUID id;

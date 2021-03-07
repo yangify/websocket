@@ -1,11 +1,14 @@
 package com.gov.dsta.coldstraw.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@JsonIgnoreProperties("id")
 public class Module {
 
     private UUID id;
