@@ -26,11 +26,11 @@ public class NotificationController {
         if (requireDate(startDate, endDate) && requirePagination(page, size))
             return notificationService.getNotificationsByDateAndPage(startDate, endDate, page, size);
 
-        if (requirePagination(page, size))
-            return notificationService.getNotificationsByPage(page, size);
-
         if (requireDate(startDate, endDate))
             return notificationService.getNotificationsByDate(startDate, endDate, null);
+
+        if (requirePagination(page, size))
+            return notificationService.getNotificationsByPage(page, size);
 
         return notificationService.getNotifications();
     }
