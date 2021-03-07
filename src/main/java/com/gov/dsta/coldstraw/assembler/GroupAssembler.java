@@ -25,6 +25,6 @@ public class GroupAssembler implements RepresentationModelAssembler<Group, Entit
     }
 
     public CollectionModel<EntityModel<Group>> toCollectionModel(List<EntityModel<Group>> groups) {
-        return CollectionModel.of(groups, linkTo(methodOn(UserController.class).getUsers()).withSelfRel());
+        return CollectionModel.of(groups, linkTo(methodOn(GroupController.class).getGroups()).withSelfRel());
     }
 }

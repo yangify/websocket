@@ -25,6 +25,6 @@ public class ModuleAssembler implements RepresentationModelAssembler<Module, Ent
     }
 
     public CollectionModel<EntityModel<Module>> toCollectionModel(List<EntityModel<Module>> modules) {
-        return CollectionModel.of(modules, linkTo(methodOn(UserController.class).getUsers()).withSelfRel());
+        return CollectionModel.of(modules, linkTo(methodOn(ModuleController.class).getModules()).withSelfRel());
     }
 }
