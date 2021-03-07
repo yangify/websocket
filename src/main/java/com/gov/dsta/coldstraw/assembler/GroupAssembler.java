@@ -20,8 +20,7 @@ public class GroupAssembler implements RepresentationModelAssembler<Group, Entit
     public EntityModel<Group> toModel(Group group) {
         return EntityModel.of(group,
                 linkTo(methodOn(GroupController.class).getGroup(group.getId())).withSelfRel(),
-                linkTo(methodOn(GroupController.class).getGroups()).withRel("groups"),
-                linkTo(methodOn(GroupController.class).getUsers(group.getId())).withRel("users")
+                linkTo(methodOn(GroupController.class).getGroups()).withRel("groups")
         );
     }
 
