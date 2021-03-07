@@ -1,4 +1,4 @@
-package com.gov.dsta.coldstraw.configurer;
+package com.gov.dsta.coldstraw.configuration;
 
 import com.gov.dsta.coldstraw.interceptor.NotificationInterceptor;
 import org.springframework.context.annotation.Configuration;
