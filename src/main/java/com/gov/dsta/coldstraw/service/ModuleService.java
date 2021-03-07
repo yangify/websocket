@@ -26,6 +26,10 @@ public class ModuleService {
         return moduleRepository.findById(moduleId).orElseThrow(() -> new ModuleNotFoundException(moduleId));
     }
 
+    public Module getModule(String moduleName) {
+        return moduleRepository.findByName(moduleName).orElseThrow(() -> new ModuleNotFoundException(moduleName));
+    }
+
     public List<Notification> getNotifications(UUID moduleId) {
         Module module = getModule(moduleId);
         return module.getNotifications();
