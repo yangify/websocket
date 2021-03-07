@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.service;
 
+import com.gov.dsta.coldstraw.model.Module;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
@@ -14,10 +15,14 @@ import java.util.List;
 @Service
 public class NotificationService {
 
+    private final ModuleService moduleService;
     private final UserService userService;
     private final NotificationRepository notificationRepository;
 
-    public NotificationService(UserService userService, NotificationRepository notificationRepository) {
+    public NotificationService(ModuleService moduleService,
+                               UserService userService,
+                               NotificationRepository notificationRepository) {
+        this.moduleService = moduleService;
         this.userService = userService;
         this.notificationRepository = notificationRepository;
     }
@@ -78,9 +83,28 @@ public class NotificationService {
     }
 
     public Notification createNotification(Notification notification) {
+        craftModule(notification);
+        craftSender(notification);
+        craftReceivers(notification);
+        craftGroups(notification);
+        return notificationRepository.save(notification);
+    }
+
+    private void craftModule(Notification notification) {
+        String moduleName = notification.getModule().getName();
+        Module module = moduleService.getModule(moduleName);
+        notification.setModule(module);
+    }
+
+    private void craftSender(Notification notification) {
         String senderName = notification.getSender().getName();
         User sender = userService.getUser(senderName);
         notification.setSender(sender);
-        return notificationRepository.save(notification);
+    }
+
+    private void craftReceivers(Notification notification) {
+    }
+
+    private void craftGroups(Notification notification) {
     }
 }
