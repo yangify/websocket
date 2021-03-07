@@ -3,7 +3,7 @@ package com.gov.dsta.coldstraw.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,7 +15,7 @@ public class Notification implements Serializable {
     private List<ReceiverNotification> receivers;
     private List<Group> groups;
     private String message;
-    private Timestamp timestamp;
+    private Date date;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +27,7 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    @NotNull
+//    @NotNull
     @ManyToOne()
     public Module getModule() {
         return module;
@@ -37,7 +37,7 @@ public class Notification implements Serializable {
         this.module = module;
     }
 
-    @NotNull
+//    @NotNull
     @ManyToOne()
     public User getSender() {
         return sender;
@@ -78,12 +78,12 @@ public class Notification implements Serializable {
         this.message = message;
     }
 
-    @NotNull
-    public Timestamp getTimestamp() {
-        return timestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getDate() {
+        return date;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

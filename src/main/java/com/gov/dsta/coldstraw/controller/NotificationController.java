@@ -2,9 +2,10 @@ package com.gov.dsta.coldstraw.controller;
 
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.service.NotificationService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,19 +19,10 @@ public class NotificationController {
     }
 
     @GetMapping()
-    public List<Notification> getNotifications(@RequestParam(required = false) LocalDateTime start,
-                                               @RequestParam(required = false) LocalDateTime end) {
-        // if start is empty
-        // get all notifications
-
-        // if start and end is empty
-        // get all notifications
-
-        // if start is not empty and end is empty
-        // get all notifications from the start
-
-        // if start and end not empty
-        // get all notifications within range
+    public List<Notification> getNotifications(@RequestParam(required = false)
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
+                                               @RequestParam(required = false)
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
         return notificationService.getNotifications(start, end);
     }
 
@@ -42,8 +34,7 @@ public class NotificationController {
 
     @PostMapping()
     public Notification addNotification(@RequestBody Notification notification) {
-        // create notification
-        return null;
+        return notificationService.createNotification(notification);
     }
 
     @PutMapping("/{notificationId}")

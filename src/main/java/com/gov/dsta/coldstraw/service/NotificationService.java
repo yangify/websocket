@@ -2,10 +2,9 @@ package com.gov.dsta.coldstraw.service;
 
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,12 +16,30 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public List<Notification> getNotifications(LocalDateTime start, LocalDateTime end) {
-        if (start == null && end == null) return getNotification();
+    public List<Notification> getNotifications(Date start, Date end) {
+        if (start == null && end == null)   return getNotifications();
+        if (start == null)                  return getNotificationsBefore(end);
+        if (end == null)                    return getNotificationsAfter(start);
+        return getNotificationsBetween(start, end);
+    }
+
+    public List<Notification> getNotifications() {
+        return (List<Notification>) notificationRepository.findAll();
+    }
+
+    public List<Notification> getNotificationsBefore(Date end) {
         return null;
     }
 
-    public List<Notification> getNotification() {
-        return (List<Notification>) notificationRepository.findAll();
+    public List<Notification> getNotificationsAfter(Date start) {
+        return null;
+    }
+
+    public List<Notification> getNotificationsBetween(Date start, Date end) {
+        return null;
+    }
+
+    public Notification createNotification(Notification notification) {
+        return notificationRepository.save(notification);
     }
 }
