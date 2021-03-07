@@ -1,6 +1,7 @@
 package com.gov.dsta.coldstraw.service;
 
 import com.gov.dsta.coldstraw.model.Notification;
+import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class NotificationService {
 
+    private final UserService userService;
     private final NotificationRepository notificationRepository;
 
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(UserService userService, NotificationRepository notificationRepository) {
+        this.userService = userService;
         this.notificationRepository = notificationRepository;
     }
 
@@ -75,6 +78,9 @@ public class NotificationService {
     }
 
     public Notification createNotification(Notification notification) {
+        String senderName = notification.getSender().getName();
+        User sender = userService.getUser(senderName);
+        notification.setSender(sender);
         return notificationRepository.save(notification);
     }
 }
