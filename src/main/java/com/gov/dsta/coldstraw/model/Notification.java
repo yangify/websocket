@@ -16,7 +16,7 @@ public class Notification implements Serializable {
     private List<ReceiverNotification> receivers;
     private List<Group> groups;
     private String message;
-    private Date date;
+    private Date date = new Date();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
