@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,13 +41,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public EntityModel<User> getUser(@PathVariable Long userId) {
+    public EntityModel<User> getUser(@PathVariable UUID userId) {
         User user = userService.getUser(userId);
         return userAssembler.toModel(user);
     }
 
     @GetMapping("/{userId}/groups")
-    public CollectionModel<EntityModel<Group>> getGroups(@PathVariable Long userId) {
+    public CollectionModel<EntityModel<Group>> getGroups(@PathVariable UUID userId) {
         List<EntityModel<Group>> groups = userService
                 .getUserGroups(userId)
                 .stream()
@@ -56,19 +57,19 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/groups/{groupId}")
-    public EntityModel<Group> getGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+    public EntityModel<Group> getGroup(@PathVariable UUID userId, @PathVariable UUID groupId) {
         Group group = userService.getUserGroup(userId, groupId);
         return groupAssembler.toModel(group);
     }
 
     @GetMapping("/{userId}/notifications/sent")
-    public List<Notification> getSentNotifications(@PathVariable Long userId) {
+    public List<Notification> getSentNotifications(@PathVariable UUID userId) {
         // return all notifications sent by user
         return null;
     }
 
     @GetMapping("/{userId}/notifications/received")
-    public List<Notification> getReceivedNotifications(@PathVariable Long userId) {
+    public List<Notification> getReceivedNotifications(@PathVariable UUID userId) {
         // return all notifications received by user
         return null;
     }
@@ -83,7 +84,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/groups")
-    public ResponseEntity<EntityModel<User>> addGroup(@PathVariable Long userId, @RequestParam Long groupId) {
+    public ResponseEntity<EntityModel<User>> addGroup(@PathVariable UUID userId, @RequestParam UUID groupId) {
         User user = userService.addGroup(userId, groupId);
         EntityModel<User> userModel = userAssembler.toModel(user);
         return ResponseEntity
@@ -92,7 +93,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<EntityModel<User>> updateUser(@PathVariable Long userId, @RequestBody User user) {
+    public ResponseEntity<EntityModel<User>> updateUser(@PathVariable UUID userId, @RequestBody User user) {
         User updatedRole = userService.updateUser(userId, user);
         EntityModel<User> roleModel = userAssembler.toModel(updatedRole);
         return ResponseEntity
@@ -101,19 +102,19 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{userId}/groups")
-    public ResponseEntity<Void> deleteUserGroups(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUserGroups(@PathVariable UUID userId) {
         userService.deleteUserGroups(userId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{userId}/groups/{groupId}")
-    public ResponseEntity<Void> deleteUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+    public ResponseEntity<Void> deleteUserGroup(@PathVariable UUID userId, @PathVariable UUID groupId) {
         userService.deleteUserGroup(userId, groupId);
         return ResponseEntity.noContent().build();
     }

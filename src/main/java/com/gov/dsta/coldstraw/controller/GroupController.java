@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -41,7 +42,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public EntityModel<Group> getGroup(@PathVariable Long groupId) {
+    public EntityModel<Group> getGroup(@PathVariable UUID groupId) {
         try {
             Group group = groupService.getGroup(groupId);
             return groupAssembler.toModel(group);
@@ -51,7 +52,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}/users")
-    public CollectionModel<EntityModel<User>> getUsers(@PathVariable Long groupId) {
+    public CollectionModel<EntityModel<User>> getUsers(@PathVariable UUID groupId) {
         List<EntityModel<User>> users = groupService.getUsers(groupId).stream()
                 .map(userAssembler::toModel)
                 .collect(Collectors.toList());
@@ -59,7 +60,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}/users/{userId}")
-    public EntityModel<User> getUser(@PathVariable Long groupId, @PathVariable Long userId) {
+    public EntityModel<User> getUser(@PathVariable UUID groupId, @PathVariable UUID userId) {
         try {
             User user = groupService.getUser(groupId, userId);
             return userAssembler.toModel(user);
@@ -78,7 +79,7 @@ public class GroupController {
     }
 
     @PutMapping("/{groupId}/users")
-    public Group addUser(@PathVariable Long groupId, @RequestBody Long userId) {
+    public Group addUser(@PathVariable UUID groupId, @RequestBody UUID userId) {
         return groupService.addUser(groupId, userId);
     }
 
@@ -88,19 +89,19 @@ public class GroupController {
     }
 
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+    public ResponseEntity<Void> deleteGroup(@PathVariable UUID groupId) {
         groupService.deleteGroup(groupId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{groupId}/users")
-    public ResponseEntity<Void> deleteGroupUsers(@PathVariable Long groupId) {
+    public ResponseEntity<Void> deleteGroupUsers(@PathVariable UUID groupId) {
         groupService.deleteGroupUsers(groupId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{groupId}/users/{userId}")
-    public ResponseEntity<Void> deleteGroupUser(@PathVariable Long groupId, @PathVariable Long userId) {
+    public ResponseEntity<Void> deleteGroupUser(@PathVariable UUID groupId, @PathVariable UUID userId) {
         groupService.deleteGroupUser(groupId, userId);
         return ResponseEntity.noContent().build();
     }

@@ -7,12 +7,13 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "\"user\"")
 public class User implements Serializable {
 
-    private Long id;
+    private UUID id;
     private String name;
     private Set<Group> groups = new HashSet<>();
     private Set<Notification> notificationsSent = new HashSet<>();
@@ -20,11 +21,11 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

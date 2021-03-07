@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,16 +29,16 @@ public class GroupService {
         return (List<Group>) groupRepository.findAll();
     }
 
-    public Group getGroup(Long groupId) {
+    public Group getGroup(UUID groupId) {
         return groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
-    public Set<User> getUsers(Long groupId) {
+    public Set<User> getUsers(UUID groupId) {
         Group group = getGroup(groupId);
         return group.getUsers();
     }
 
-    public User getUser(Long groupId, Long userId) {
+    public User getUser(UUID groupId, UUID userId) {
         Set<User> users = getUsers(groupId);
         return users.stream()
                 .filter(user -> user.getId().equals(userId))
@@ -51,7 +52,7 @@ public class GroupService {
     }
 
     // PUT
-    public Group addUser(Long groupId, Long userId) {
+    public Group addUser(UUID groupId, UUID userId) {
         User user = userService.getUser(userId);
         Group group = getGroup(groupId);
         group.addUser(user);
@@ -59,19 +60,19 @@ public class GroupService {
     }
 
     // DELETE
-    public void deleteGroup(Long groupId) {
+    public void deleteGroup(UUID groupId) {
         deleteGroupUsers(groupId);
         groupRepository.deleteById(groupId);
     }
 
-    public void deleteGroupUsers(Long groupId) {
+    public void deleteGroupUsers(UUID groupId) {
         Group group = getGroup(groupId);
         Set<User> users = group.getUsers();
         users.forEach(user -> deleteGroupUser(groupId, user.getId()));
         groupRepository.save(group);
     }
 
-    public void deleteGroupUser(Long groupId, Long userId) {
+    public void deleteGroupUser(UUID groupId, UUID userId) {
         Group group = getGroup(groupId);
         Set<User> users = group
                 .getUsers()

@@ -5,11 +5,12 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Notification implements Serializable {
 
-    private Long id;
+    private UUID id;
     private Module module;
     private User sender;
     private List<ReceiverNotification> receivers;
@@ -19,11 +20,11 @@ public class Notification implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

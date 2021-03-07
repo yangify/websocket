@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface NotificationRepository extends CrudRepository<Notification, Long> {
+public interface NotificationRepository extends CrudRepository<Notification, UUID> {
 
     List<Notification> findAllByDateBetween(Date start, Date end);
 

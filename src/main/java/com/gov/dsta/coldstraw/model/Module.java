@@ -3,21 +3,22 @@ package com.gov.dsta.coldstraw.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Module {
 
-    private Long id;
+    private UUID id;
     private String name;
     private List<Notification> notifications;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

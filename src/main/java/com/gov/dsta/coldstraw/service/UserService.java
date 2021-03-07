@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,16 +31,16 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public User getUser(Long userId) {
+    public User getUser(UUID userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    public Set<Group> getUserGroups(Long userId) {
+    public Set<Group> getUserGroups(UUID userId) {
         User user = getUser(userId);
         return user.getGroups();
     }
 
-    public Group getUserGroup(Long userId, Long groupId) {
+    public Group getUserGroup(UUID userId, UUID groupId) {
         Set<Group> groups = getUserGroups(userId);
         return groups.stream()
                 .filter(group -> group.getId().equals(groupId))
@@ -53,14 +54,14 @@ public class UserService {
     }
 
     // PUT
-    public User addGroup(Long userId, Long groupId) {
+    public User addGroup(UUID userId, UUID groupId) {
         User user = getUser(userId);
         Group group = groupService.getGroup(groupId);
         user.addGroup(group);
         return userRepository.save(user);
     }
 
-    public User updateUser(Long userId, User newUser) {
+    public User updateUser(UUID userId, User newUser) {
         return userRepository.findById(userId)
                 .map(user -> {
                     user.setName(newUser.getName());
@@ -73,19 +74,19 @@ public class UserService {
     }
 
     // DELETE
-    public void deleteUser(Long userId) {
+    public void deleteUser(UUID userId) {
         deleteUserGroups(userId);
         userRepository.deleteById(userId);
     }
 
-    public void deleteUserGroups(Long userId) {
+    public void deleteUserGroups(UUID userId) {
         User user = getUser(userId);
         Set<Group> groups = user.getGroups();
         groups.forEach(group -> deleteUserGroup(userId, group.getId()));
         userRepository.save(user);
     }
 
-    public void deleteUserGroup(Long userId, Long groupId) {
+    public void deleteUserGroup(UUID userId, UUID groupId) {
         groupService.deleteGroupUser(groupId, userId);
         User user = getUser(userId);
         Set<Group> groups = user

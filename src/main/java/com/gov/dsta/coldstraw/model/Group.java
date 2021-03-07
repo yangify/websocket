@@ -6,23 +6,24 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "\"group\"")
 public class Group {
 
-    private Long id;
+    private UUID id;
     private String name;
     private Set<User> users = new HashSet<>();
     private Set<Notification> notifications = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,13 +37,13 @@ public class ModuleController {
     }
 
     @GetMapping("/{moduleId}")
-    public EntityModel<Module> getModule(@PathVariable Long moduleId) {
+    public EntityModel<Module> getModule(@PathVariable UUID moduleId) {
         Module module = moduleService.getModule(moduleId);
         return moduleAssembler.toModel(module);
     }
 
     @GetMapping("/{moduleId}/notifications")
-    public List<Notification> getModuleNotifications(@PathVariable Long moduleId) {
+    public List<Notification> getModuleNotifications(@PathVariable UUID moduleId) {
         return moduleService.getNotifications(moduleId);
     }
 
@@ -62,7 +63,7 @@ public class ModuleController {
     }
 
     @DeleteMapping("/{moduleId}")
-    public ResponseEntity<Void> deleteModule(@PathVariable Long moduleId) {
+    public ResponseEntity<Void> deleteModule(@PathVariable UUID moduleId) {
         moduleService.deleteModule(moduleId);
         return ResponseEntity.noContent().build();
     }
