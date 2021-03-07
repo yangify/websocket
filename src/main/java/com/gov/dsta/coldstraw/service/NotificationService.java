@@ -2,6 +2,9 @@ package com.gov.dsta.coldstraw.service;
 
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,7 +19,13 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public List<Notification> getNotifications(Date start, Date end) {
+    public List<Notification> getNotificationsByPage(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Notification> pageNotifications = notificationRepository.findAll(pageable);
+        return pageNotifications.getContent();
+    }
+
+    public List<Notification> getNotificationsByDate(Date start, Date end) {
         if (start == null && end == null)   return getNotifications();
         if (start == null)                  return getNotificationsBefore(end);
         if (end == null)                    return getNotificationsAfter(start);
