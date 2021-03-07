@@ -35,6 +35,10 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
+    public User getUser(String name) {
+        return userRepository.findByName(name).orElseThrow(() -> new UserNotFoundException(name));
+    }
+
     public Set<Group> getUserGroups(UUID userId) {
         User user = getUser(userId);
         return user.getGroups();
