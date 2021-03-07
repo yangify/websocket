@@ -19,29 +19,55 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public List<Notification> getNotificationsByPage(Integer page, Integer size) {
+    public List<Notification> getNotificationsByDateAndPage(Date startDate, Date endDate,
+                                                            Integer page,   Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Notification> pageNotifications = notificationRepository.findAll(pageable);
-        return pageNotifications.getContent();
+        return getNotificationsByDate(startDate, endDate, pageable);
     }
 
-    public List<Notification> getNotificationsByDate(Date start, Date end) {
-        if (start == null && end == null)   return getNotifications();
-        if (start == null)                  return getNotificationsBefore(end);
-        if (end == null)                    return getNotificationsAfter(start);
-        return getNotificationsBetween(start, end);
+    public List<Notification> getNotificationsByPage(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return getNotifications(pageable);
+    }
+
+    public List<Notification> getNotificationsByDate(Date start, Date end, Pageable pageable) {
+        if (start == null && end == null)   return getNotifications(pageable);
+        if (start == null)                  return getNotificationsBefore(end, pageable);
+        if (end == null)                    return getNotificationsAfter(start, pageable);
+        return getNotificationsBetween(start, end, pageable);
+    }
+
+    public List<Notification> getNotifications(Pageable pageable) {
+        if (pageable == null) return getNotifications();
+        Page<Notification> pageNotifications = notificationRepository.findAll(pageable);
+        return pageNotifications.getContent();
     }
 
     public List<Notification> getNotifications() {
         return (List<Notification>) notificationRepository.findAll();
     }
 
+    public List<Notification> getNotificationsBefore(Date end, Pageable pageable) {
+        if (pageable == null) getNotificationsBefore(end);
+        return notificationRepository.findAllByDateBefore(end, pageable);
+    }
+
     public List<Notification> getNotificationsBefore(Date end) {
         return notificationRepository.findAllByDateBefore(end);
     }
 
+    public List<Notification> getNotificationsAfter(Date start, Pageable pageable) {
+        if (pageable == null) getNotificationsAfter(start);
+        return notificationRepository.findAllByDateAfter(start, pageable);
+    }
+
     public List<Notification> getNotificationsAfter(Date start) {
         return notificationRepository.findAllByDateAfter(start);
+    }
+
+    public List<Notification> getNotificationsBetween(Date start, Date end, Pageable pageable) {
+        if (pageable == null) getNotificationsBetween(start, end);
+        return notificationRepository.findAllByDateBetween(start, end, pageable);
     }
 
     public List<Notification> getNotificationsBetween(Date start, Date end) {

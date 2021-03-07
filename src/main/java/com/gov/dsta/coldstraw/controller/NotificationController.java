@@ -19,11 +19,20 @@ public class NotificationController {
     }
 
     @GetMapping()
-    public List<Notification> getNotifications(@RequestParam(required = false)
-                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
-                                               @RequestParam(required = false)
-                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
-        return notificationService.getNotifications(start, end);
+    public List<Notification> getNotifications(@RequestParam(required = false) Integer page,
+                                               @RequestParam(required = false) Integer size,
+                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        if (requireDate(startDate, endDate) && requirePagination(page, size))
+            return notificationService.getNotificationsByDateAndPage(startDate, endDate, page, size);
+
+        if (requirePagination(page, size))
+            return notificationService.getNotificationsByPage(page, size);
+
+        if (requireDate(startDate, endDate))
+            return notificationService.getNotificationsByDate(startDate, endDate, null);
+
+        return notificationService.getNotifications();
     }
 
     @GetMapping("/{notificationId}")
@@ -38,7 +47,8 @@ public class NotificationController {
     }
 
     @PutMapping("/{notificationId}")
-    public Notification updateNotification(@PathVariable Long notificationId, @RequestBody Notification notification) {
+    public Notification updateNotification(@PathVariable Long notificationId,
+                                           @RequestBody Notification notification) {
         // update read status
         return null;
     }
@@ -46,5 +56,13 @@ public class NotificationController {
     @DeleteMapping("/{notificationId}")
     public void deleteNotification(@PathVariable Long notificationId) {
         // delete notification from receiver
+    }
+
+    private boolean requirePagination(Integer page, Integer size) {
+        return page != null && size != null;
+    }
+
+    private boolean requireDate(Date startDate, Date endDate) {
+        return startDate != null || endDate != null;
     }
 }
