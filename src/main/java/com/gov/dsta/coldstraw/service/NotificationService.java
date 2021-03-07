@@ -28,15 +28,15 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsBefore(Date end) {
-        return null;
+        return notificationRepository.findAllByDateBefore(end);
     }
 
     public List<Notification> getNotificationsAfter(Date start) {
-        return null;
+        return notificationRepository.findAllByDateAfter(start);
     }
 
     public List<Notification> getNotificationsBetween(Date start, Date end) {
-        return null;
+        return notificationRepository.findAllByDateBetween(start, end);
     }
 
     public Notification createNotification(Notification notification) {
