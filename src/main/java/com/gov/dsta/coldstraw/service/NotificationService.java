@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.service;
 
+import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundException;
 import com.gov.dsta.coldstraw.model.Module;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.User;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class NotificationService {
@@ -80,6 +83,10 @@ public class NotificationService {
 
     public List<Notification> getNotificationsBetween(Date start, Date end) {
         return notificationRepository.findAllByDateBetween(start, end);
+    }
+
+    public Notification getNotification(UUID notificationId) {
+        return notificationRepository.findById(notificationId).orElseThrow(() -> new NotificationNotFoundException(notificationId));
     }
 
     public Notification createNotification(Notification notification) {

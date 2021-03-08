@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/notifications")
@@ -36,9 +37,8 @@ public class NotificationController {
     }
 
     @GetMapping("/{notificationId}")
-    public Notification getNotification(@PathVariable Long notificationId) {
-        // return a single notification
-        return null;
+    public Notification getNotification(@PathVariable UUID notificationId) {
+        return notificationService.getNotification(notificationId);
     }
 
     @PostMapping()
