@@ -20,18 +20,14 @@ public class NotificationService {
     private final UserService userService;
     private final GroupService groupService;
     private final NotificationRepository notificationRepository;
-    private final UserRepository userRepository;
-
     public NotificationService(ModuleService moduleService,
                                UserService userService,
                                GroupService groupService,
-                               NotificationRepository notificationRepository,
-                               UserRepository userRepository) {
+                               NotificationRepository notificationRepository) {
         this.moduleService = moduleService;
         this.userService = userService;
         this.groupService = groupService;
         this.notificationRepository = notificationRepository;
-        this.userRepository = userRepository;
     }
 
     public List<Notification> getNotificationsByDateAndPage(Date startDate, Date endDate,
