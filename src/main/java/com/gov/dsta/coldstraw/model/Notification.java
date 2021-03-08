@@ -41,9 +41,7 @@ public class Notification implements Serializable {
     }
 
     public void setModule(Module module) {
-        if (module == null) return;
         this.module = module;
-        module.addNotification(this);
     }
 
 //    @NotNull
@@ -62,6 +60,7 @@ public class Notification implements Serializable {
             joinColumns = @JoinColumn(name = "notification_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     @ManyToMany()
+    @JsonIgnoreProperties({"id", "groups", "notificationsSent", "notificationsReceived"})
     public Set<User> getReceivers() {
         return receivers;
     }

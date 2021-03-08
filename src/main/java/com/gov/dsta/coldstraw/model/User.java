@@ -78,6 +78,7 @@ public class User implements Serializable {
     }
 
     @ManyToMany(mappedBy = "receivers")
+    @JsonIgnoreProperties({"receivers"})
     public Set<Notification> getNotificationsReceived() {
         return notificationsReceived;
     }

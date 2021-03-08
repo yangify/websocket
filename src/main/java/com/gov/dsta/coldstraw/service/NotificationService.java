@@ -1,11 +1,10 @@
 package com.gov.dsta.coldstraw.service;
 
 import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundException;
-import com.gov.dsta.coldstraw.model.Group;
+import com.gov.dsta.coldstraw.model.*;
 import com.gov.dsta.coldstraw.model.Module;
-import com.gov.dsta.coldstraw.model.Notification;
-import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
+import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,15 +20,18 @@ public class NotificationService {
     private final UserService userService;
     private final GroupService groupService;
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
     public NotificationService(ModuleService moduleService,
                                UserService userService,
                                GroupService groupService,
-                               NotificationRepository notificationRepository) {
+                               NotificationRepository notificationRepository,
+                               UserRepository userRepository) {
         this.moduleService = moduleService;
         this.userService = userService;
         this.groupService = groupService;
         this.notificationRepository = notificationRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Notification> getNotificationsByDateAndPage(Date startDate, Date endDate,
@@ -112,6 +114,15 @@ public class NotificationService {
     }
 
     private void craftReceivers(Notification notification) {
+        Set<User> receivers = notification
+                .getReceivers()
+                .stream()
+                .map(rawReceiver -> {
+                    String receiverName = rawReceiver.getName();
+                    return userService.getUser(receiverName);
+                })
+                .collect(Collectors.toSet());
+        notification.setReceivers(receivers);
     }
 
     private void craftGroups(Notification notification) {
@@ -124,6 +135,5 @@ public class NotificationService {
                 })
                 .collect(Collectors.toSet());
         notification.setGroups(groups);
-        notificationRepository.save(notification);
     }
 }
