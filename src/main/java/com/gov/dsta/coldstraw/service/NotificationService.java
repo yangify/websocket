@@ -1,6 +1,7 @@
 package com.gov.dsta.coldstraw.service;
 
 import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundException;
+import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.Module;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.User;
@@ -10,23 +11,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class NotificationService {
 
     private final ModuleService moduleService;
     private final UserService userService;
+    private final GroupService groupService;
     private final NotificationRepository notificationRepository;
 
     public NotificationService(ModuleService moduleService,
                                UserService userService,
+                               GroupService groupService,
                                NotificationRepository notificationRepository) {
         this.moduleService = moduleService;
         this.userService = userService;
+        this.groupService = groupService;
         this.notificationRepository = notificationRepository;
     }
 
@@ -113,5 +115,15 @@ public class NotificationService {
     }
 
     private void craftGroups(Notification notification) {
+        Set<Group> groups = notification
+                .getGroups()
+                .stream()
+                .map(group -> {
+                    String groupName = group.getName();
+                    return groupService.getGroup(groupName);
+                })
+                .collect(Collectors.toSet());
+        notification.setGroups(groups);
+        notificationRepository.save(notification);
     }
 }
