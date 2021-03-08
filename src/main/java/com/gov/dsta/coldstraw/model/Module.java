@@ -47,4 +47,10 @@ public class Module {
     public void setNotifications(Set<Notification> notifications) {
         this.notifications = notifications;
     }
+
+    public void addNotification(Notification notification) {
+        if (this.notifications.contains(notification)) return;
+        this.notifications.add(notification);
+        notification.setModule(this);
+    }
 }

@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class Notification implements Serializable {
@@ -16,7 +13,7 @@ public class Notification implements Serializable {
     private UUID id;
     private Module module;
     private User sender;
-    private Set<ReceiverNotification> receivers;
+    private Set<User> receivers;
     private Set<Group> groups;
     private String message;
     private Date date = new Date();
@@ -44,7 +41,9 @@ public class Notification implements Serializable {
     }
 
     public void setModule(Module module) {
+        if (module == null) return;
         this.module = module;
+        module.addNotification(this);
     }
 
 //    @NotNull
@@ -58,17 +57,21 @@ public class Notification implements Serializable {
         this.sender = sender;
     }
 
-    @OneToMany(mappedBy = "primaryKey.receiver")
-    public Set<ReceiverNotification> getReceivers() {
+    @JoinTable(
+            name = "notification_receiver",
+            joinColumns = @JoinColumn(name = "notification_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany()
+    public Set<User> getReceivers() {
         return receivers;
     }
 
-    public void setReceivers(Set<ReceiverNotification> receiverNotifications) {
-        this.receivers = receiverNotifications;
+    public void setReceivers(Set<User> receivers) {
+        this.receivers = receivers;
     }
 
     @JoinTable(
-            name = "group_notification",
+            name = "notification_group",
             joinColumns = @JoinColumn(name = "notification_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     @ManyToMany()
