@@ -33,6 +33,10 @@ public class GroupService {
         return groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
     }
 
+    public Group getGroup(String groupName) {
+        return groupRepository.findByName(groupName).orElseThrow(() -> new GroupNotFoundException(groupName));
+    }
+
     public Set<User> getUsers(UUID groupId) {
         Group group = getGroup(groupId);
         return group.getUsers();

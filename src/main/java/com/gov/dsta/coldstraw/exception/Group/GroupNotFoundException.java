@@ -7,7 +7,13 @@ import java.util.UUID;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class GroupNotFoundException extends RuntimeException {
+
     public GroupNotFoundException(UUID groupId) {
         super("Could not find group with id: " + groupId);
     }
+
+    public GroupNotFoundException(String groupName) {
+        super("Could not find group with name: " + groupName);
+    }
+
 }
