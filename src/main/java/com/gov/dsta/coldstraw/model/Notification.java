@@ -13,7 +13,7 @@ public class Notification implements Serializable {
     private UUID id;
     private Module module;
     private User sender;
-    private Set<User> receivers;
+    private Set<NotificationReceiver> receivers;
     private Set<Group> groups;
     private String message;
     private Date date = new Date();
@@ -55,17 +55,13 @@ public class Notification implements Serializable {
         this.sender = sender;
     }
 
-    @JoinTable(
-            name = "notification_receiver",
-            joinColumns = @JoinColumn(name = "notification_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @ManyToMany()
-    @JsonIgnoreProperties({"id", "groups", "notificationsSent", "notificationsReceived"})
-    public Set<User> getReceivers() {
+    @OneToMany(mappedBy = "primaryKey.receiver")
+    @JsonIgnoreProperties({"primaryKey", "notification", "deleted", "receiver.groups"})
+    public Set<NotificationReceiver> getReceivers() {
         return receivers;
     }
 
-    public void setReceivers(Set<User> receivers) {
+    public void setReceivers(Set<NotificationReceiver> receivers) {
         this.receivers = receivers;
     }
 

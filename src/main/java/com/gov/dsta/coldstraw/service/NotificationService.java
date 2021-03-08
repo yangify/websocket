@@ -114,12 +114,13 @@ public class NotificationService {
     }
 
     private void craftReceivers(Notification notification) {
-        Set<User> receivers = notification
+        Set<NotificationReceiver> receivers = notification
                 .getReceivers()
                 .stream()
-                .map(rawReceiver -> {
-                    String receiverName = rawReceiver.getName();
-                    return userService.getUser(receiverName);
+                .peek(rawReceiver -> {
+                    String receiverName = rawReceiver.getReceiver().getName();
+                    User receiver = userService.getUser(receiverName);
+                    rawReceiver.setReceiver(receiver);
                 })
                 .collect(Collectors.toSet());
         notification.setReceivers(receivers);
