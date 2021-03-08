@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String name;
     private Set<Group> groups;
     private Set<Notification> notificationsSent;
-    private Set<ReceiverNotification> notificationsReceived;
+    private Set<Notification> notificationsReceived;
 
     public User() {
         this.groups = new HashSet<>();
@@ -77,13 +77,13 @@ public class User implements Serializable {
         this.notificationsSent = notificationsSent;
     }
 
-    @OneToMany(mappedBy = "primaryKey.notification")
-    public Set<ReceiverNotification> getNotificationsReceived() {
+    @ManyToMany(mappedBy = "receivers")
+    public Set<Notification> getNotificationsReceived() {
         return notificationsReceived;
     }
 
-    public void setNotificationsReceived(Set<ReceiverNotification> receiverNotifications) {
-        this.notificationsReceived = receiverNotifications;
+    public void setNotificationsReceived(Set<Notification> notificationsReceived) {
+        this.notificationsReceived = notificationsReceived;
     }
 
     @Override
