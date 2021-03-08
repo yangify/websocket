@@ -31,4 +31,13 @@ public class ReceiverNotificationId implements Serializable {
     public void setNotification(Notification notification) {
         this.notification = notification;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof ReceiverNotificationId)) return false;
+        ReceiverNotificationId id = (ReceiverNotificationId) object;
+        boolean hasSameReceiver = id.getReceiver().equals(this.getReceiver());
+        boolean hasSameNotification = id.getNotification().equals(this.getNotification());
+        return hasSameReceiver && hasSameNotification;
+    }
 }

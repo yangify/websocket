@@ -96,4 +96,11 @@ public class Notification implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Notification)) return false;
+        Notification notification = (Notification) object;
+        return this.id.equals(notification.getId());
+    }
 }

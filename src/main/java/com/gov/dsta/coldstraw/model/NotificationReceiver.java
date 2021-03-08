@@ -62,4 +62,11 @@ public class NotificationReceiver implements Serializable {
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof NotificationReceiver)) return false;
+        NotificationReceiver notificationReceiver = (NotificationReceiver) object;
+        return this.primaryKey.equals(notificationReceiver.getPrimaryKey());
+    }
 }
