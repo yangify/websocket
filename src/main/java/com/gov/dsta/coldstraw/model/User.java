@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "\"user\"")
-@JsonIgnoreProperties("id")
 public class User implements Serializable {
 
     private UUID id;
@@ -24,6 +23,11 @@ public class User implements Serializable {
         this.groups = new HashSet<>();
         this.notificationsSent = new HashSet<>();
         this.notificationsReceived = new HashSet<>();
+    }
+
+    public User(String name) {
+        this();
+        this.name = name;
     }
 
     @Id
@@ -77,9 +81,8 @@ public class User implements Serializable {
         this.notificationsSent = notificationsSent;
     }
 
-
-    @OneToMany(mappedBy = "primaryKey.notification")
-    @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
+    @OneToMany(mappedBy = "receiver")
+    @JsonIgnoreProperties({"id", "receiver"})
     public Set<NotificationReceiver> getNotificationsReceived() {
         return notificationsReceived;
     }

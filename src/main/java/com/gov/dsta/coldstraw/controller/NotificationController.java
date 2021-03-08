@@ -47,9 +47,9 @@ public class NotificationController {
     }
 
     @PutMapping("/{notificationId}")
-    public Notification updateNotification(@PathVariable Long notificationId,
+    public Notification updateNotification(@PathVariable UUID notificationId,
                                            @RequestBody Notification notification) {
-        // update read status
+//        return notificationService.updateNotification(notificationId, notification);
         return null;
     }
 

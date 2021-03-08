@@ -132,11 +132,11 @@ public class NotificationService {
         Set<NotificationReceiver> receivers = notification
                 .getReceivers()
                 .stream()
-                .peek(rawReceiver -> {
-                    String receiverName = rawReceiver.getReceiver().getName();
+                .peek(notificationReceiver -> {
+                    String receiverName = notificationReceiver.getReceiver().getName();
                     User receiver = userService.getUser(receiverName);
-                    rawReceiver.setReceiver(receiver);
-                    rawReceiver.setNotification(notification);
+                    notificationReceiver.setReceiver(receiver);
+                    notificationReceiver.setNotification(notification);
                 })
                 .collect(Collectors.toSet());
         notification.setReceivers(receivers);

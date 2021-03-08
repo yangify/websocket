@@ -1,48 +1,51 @@
 package com.gov.dsta.coldstraw.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gov.dsta.coldstraw.model.compositekey.ReceiverNotificationId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
-@AssociationOverrides({
-        @AssociationOverride(name = "primaryKey.notification", joinColumns = @JoinColumn(name = "notification_id")),
-        @AssociationOverride(name = "primaryKey.receiver", joinColumns = @JoinColumn(name = "receiver_id")) })
 public class NotificationReceiver implements Serializable {
 
-    private ReceiverNotificationId primaryKey = new ReceiverNotificationId();
+    private UUID id;
+    private User receiver;
+    private Notification notification;
     private boolean isRead = false;
     private boolean isDeleted = false;
 
-    @EmbeddedId
-    public ReceiverNotificationId getPrimaryKey() {
-        return primaryKey;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public UUID getId() {
+        return id;
     }
 
-    public void setPrimaryKey(ReceiverNotificationId primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    @Transient
+    @ManyToOne()
+    @JoinColumn(name = "notification_id")
+    @JsonIgnoreProperties({"module", "receivers", "groups"})
     public Notification getNotification() {
-        return getPrimaryKey().getNotification();
+        return this.notification;
     }
 
     public void setNotification(Notification notification) {
-        getPrimaryKey().setNotification(notification);
+        this.notification= notification;
     }
 
-    @Transient
-    @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"id", "groups", "notificationsSent", "notificationsReceived"})
     public User getReceiver() {
-        return getPrimaryKey().getReceiver();
+        return this.receiver;
     }
 
     public void setReceiver(User receiver) {
-        getPrimaryKey().setReceiver(receiver);
+        this.receiver = receiver;
     }
 
     @NotNull
@@ -61,12 +64,5 @@ public class NotificationReceiver implements Serializable {
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof NotificationReceiver)) return false;
-        NotificationReceiver notificationReceiver = (NotificationReceiver) object;
-        return this.primaryKey.equals(notificationReceiver.getPrimaryKey());
     }
 }
