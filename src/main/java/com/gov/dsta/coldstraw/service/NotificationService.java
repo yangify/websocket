@@ -56,7 +56,7 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsBefore(Date end, Pageable pageable) {
-        if (pageable == null) getNotificationsBefore(end);
+        if (pageable == null) return getNotificationsBefore(end);
         return notificationRepository.findAllByDateBefore(end, pageable);
     }
 
@@ -65,7 +65,7 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsAfter(Date start, Pageable pageable) {
-        if (pageable == null) getNotificationsAfter(start);
+        if (pageable == null) return getNotificationsAfter(start);
         return notificationRepository.findAllByDateAfter(start, pageable);
     }
 
@@ -74,7 +74,7 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsBetween(Date start, Date end, Pageable pageable) {
-        if (pageable == null) getNotificationsBetween(start, end);
+        if (pageable == null) return getNotificationsBetween(start, end);
         return notificationRepository.findAllByDateBetween(start, end, pageable);
     }
 
