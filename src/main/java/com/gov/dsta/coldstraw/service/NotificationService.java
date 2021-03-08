@@ -141,4 +141,10 @@ public class NotificationService {
                 .collect(Collectors.toSet());
         notification.setReceivers(receivers);
     }
+
+    public Notification updateNotification(UUID notificationId, Notification notification) {
+        Notification originalNotification = getNotification(notificationId);
+        notificationUpdater.updateReadStatus(originalNotification, notification);
+        return notificationRepository.save(originalNotification);
+    }
 }

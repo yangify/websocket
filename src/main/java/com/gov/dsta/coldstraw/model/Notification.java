@@ -56,7 +56,7 @@ public class Notification implements Serializable {
     }
 
     @OneToMany(mappedBy = "notification")
-    @JsonIgnoreProperties({"id", "notification", "read", "deleted"})
+    @JsonIgnoreProperties({"id", "notification", "deleted"})
     public Set<NotificationReceiver> getReceivers() {
         return receivers;
     }

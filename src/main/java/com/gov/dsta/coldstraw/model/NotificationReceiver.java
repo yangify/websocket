@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -64,5 +65,18 @@ public class NotificationReceiver implements Serializable {
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof NotificationReceiver)) return false;
+        NotificationReceiver that = (NotificationReceiver) object;
+        return Objects.equals(this.receiver.getName(), that.getReceiver().getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.receiver.getName().hashCode();
     }
 }
