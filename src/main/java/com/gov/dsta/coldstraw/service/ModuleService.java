@@ -7,6 +7,7 @@ import com.gov.dsta.coldstraw.repository.ModuleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -30,7 +31,7 @@ public class ModuleService {
         return moduleRepository.findByName(moduleName).orElseThrow(() -> new ModuleNotFoundException(moduleName));
     }
 
-    public List<Notification> getNotifications(UUID moduleId) {
+    public Set<Notification> getNotifications(UUID moduleId) {
         Module module = getModule(moduleId);
         return module.getNotifications();
     }

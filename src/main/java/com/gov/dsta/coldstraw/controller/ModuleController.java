@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,7 @@ public class ModuleController {
     }
 
     @GetMapping("/{moduleId}/notifications")
-    public List<Notification> getModuleNotifications(@PathVariable UUID moduleId) {
+    public Set<Notification> getModuleNotifications(@PathVariable UUID moduleId) {
         return moduleService.getNotifications(moduleId);
     }
 
