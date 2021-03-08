@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gov.dsta.coldstraw.model.compositekey.ReceiverNotificationId;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class NotificationReceiver implements Serializable {
     }
 
     @Transient
+    @JsonIgnoreProperties({"groups", "notificationsSent", "notificationsReceived"})
     public User getReceiver() {
         return getPrimaryKey().getReceiver();
     }
