@@ -1,4 +1,4 @@
-package com.gov.dsta.coldstraw.service;
+package com.gov.dsta.coldstraw.service.notification;
 
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;

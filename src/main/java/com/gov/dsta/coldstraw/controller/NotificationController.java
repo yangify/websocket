@@ -1,7 +1,7 @@
 package com.gov.dsta.coldstraw.controller;
 
 import com.gov.dsta.coldstraw.model.Notification;
-import com.gov.dsta.coldstraw.service.NotificationService;
+import com.gov.dsta.coldstraw.service.notification.NotificationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
