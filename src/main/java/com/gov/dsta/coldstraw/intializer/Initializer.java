@@ -1,9 +1,11 @@
 package com.gov.dsta.coldstraw.intializer;
 
 import com.gov.dsta.coldstraw.model.Group;
+import com.gov.dsta.coldstraw.model.Module;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.GroupRepository;
+import com.gov.dsta.coldstraw.repository.ModuleRepository;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
 import com.gov.dsta.coldstraw.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -19,19 +21,25 @@ import java.util.stream.Stream;
 public class Initializer implements CommandLineRunner {
 
     private final GroupRepository groupRepository;
-    private final UserRepository userRepository;
+    private final ModuleRepository moduleRepository;
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
-    public Initializer(GroupRepository groupRepository, UserRepository userRepository, NotificationRepository notificationRepository) {
+    public Initializer(GroupRepository groupRepository,
+                       ModuleRepository moduleRepository,
+                       NotificationRepository notificationRepository,
+                       UserRepository userRepository) {
         this.groupRepository = groupRepository;
-        this.userRepository = userRepository;
+        this.moduleRepository = moduleRepository;
         this.notificationRepository = notificationRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void run(String... args) {
         initializeUsers();
         initializeGroup();
+        initializeModule();
         initializeNotification();
     }
 
@@ -56,6 +64,12 @@ public class Initializer implements CommandLineRunner {
         oldGroup.setName("Old");
         oldGroup.setUsers(userSet);
         groupRepository.save(oldGroup);
+    }
+
+    public void initializeModule() {
+        Module module = new Module();
+        module.setName("Facebook");
+        moduleRepository.save(module);
     }
 
     public void initializeNotification() {
