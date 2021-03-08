@@ -15,8 +15,13 @@ public class Group {
 
     private UUID id;
     private String name;
-    private Set<User> users = new HashSet<>();
-    private Set<Notification> notifications = new HashSet<>();
+    private Set<User> users;
+    private Set<Notification> notifications;
+
+    public Group() {
+        this.users = new HashSet<>();
+        this.notifications = new HashSet<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +14,11 @@ public class Module {
 
     private UUID id;
     private String name;
-    private List<Notification> notifications;
+    private Set<Notification> notifications;
+
+    public Module() {
+        this.notifications = new HashSet<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,11 +40,11 @@ public class Module {
     }
 
     @OneToMany(mappedBy = "module")
-    public List<Notification> getNotifications() {
+    public Set<Notification> getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(List<Notification> notifications) {
+    public void setNotifications(Set<Notification> notifications) {
         this.notifications = notifications;
     }
 }

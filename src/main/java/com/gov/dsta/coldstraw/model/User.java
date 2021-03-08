@@ -16,9 +16,15 @@ public class User implements Serializable {
 
     private UUID id;
     private String name;
-    private Set<Group> groups = new HashSet<>();
-    private Set<Notification> notificationsSent = new HashSet<>();
-    private Set<ReceiverNotification> notificationsReceived = new HashSet<>();
+    private Set<Group> groups;
+    private Set<Notification> notificationsSent;
+    private Set<ReceiverNotification> notificationsReceived;
+
+    public User() {
+        this.groups = new HashSet<>();
+        this.notificationsSent = new HashSet<>();
+        this.notificationsReceived = new HashSet<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

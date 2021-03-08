@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +21,11 @@ public class Notification implements Serializable {
     private String message;
     private Date date = new Date();
 
+    public Notification() {
+        this.receivers = new HashSet<>();
+        this.groups = new HashSet<>();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID getId() {
@@ -32,6 +38,7 @@ public class Notification implements Serializable {
 
 //    @NotNull
     @ManyToOne()
+    @JsonIgnoreProperties({"notifications"})
     public Module getModule() {
         return module;
     }
@@ -60,11 +67,12 @@ public class Notification implements Serializable {
         this.receivers = receiverNotifications;
     }
 
-    @ManyToMany()
     @JoinTable(
             name = "group_notification",
             joinColumns = @JoinColumn(name = "notification_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @ManyToMany()
+    @JsonIgnoreProperties({"notifications", "users"})
     public Set<Group> getGroups() {
         return this.groups;
     }
