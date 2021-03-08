@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -15,8 +15,8 @@ public class Notification implements Serializable {
     private UUID id;
     private Module module;
     private User sender;
-    private List<ReceiverNotification> receivers;
-    private List<Group> groups;
+    private Set<ReceiverNotification> receivers;
+    private Set<Group> groups;
     private String message;
     private Date date = new Date();
 
@@ -52,11 +52,11 @@ public class Notification implements Serializable {
     }
 
     @OneToMany(mappedBy = "primaryKey.receiver")
-    public List<ReceiverNotification> getReceivers() {
+    public Set<ReceiverNotification> getReceivers() {
         return receivers;
     }
 
-    public void setReceivers(List<ReceiverNotification> receiverNotifications) {
+    public void setReceivers(Set<ReceiverNotification> receiverNotifications) {
         this.receivers = receiverNotifications;
     }
 
@@ -65,11 +65,11 @@ public class Notification implements Serializable {
             name = "group_notification",
             joinColumns = @JoinColumn(name = "notification_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    public List<Group> getGroups() {
+    public Set<Group> getGroups() {
         return this.groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
