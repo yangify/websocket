@@ -2,7 +2,7 @@ package com.gov.dsta.coldstraw.controller;
 
 import com.gov.dsta.coldstraw.model.Count;
 import com.gov.dsta.coldstraw.model.Notification;
-import com.gov.dsta.coldstraw.service.NotificationReceiverService;
+import com.gov.dsta.coldstraw.service.CountService;
 import com.gov.dsta.coldstraw.service.notification.NotificationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,12 +17,12 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:3000")
 public class NotificationController {
 
-    private final NotificationReceiverService notificationReceiverService;
+    private final CountService countService;
     private final NotificationService notificationService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public NotificationController(NotificationReceiverService notificationReceiverService, NotificationService notificationService, SimpMessagingTemplate simpMessagingTemplate) {
-        this.notificationReceiverService = notificationReceiverService;
+    public NotificationController(CountService countService, NotificationService notificationService, SimpMessagingTemplate simpMessagingTemplate) {
+        this.countService = countService;
         this.notificationService = notificationService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
@@ -81,7 +81,7 @@ public class NotificationController {
     }
 
     public void publishCount() {
-        Count count = notificationReceiverService.getCount("Tom");
+        Count count = countService.getCount("Tom");
         simpMessagingTemplate.convertAndSend("/topic/count", count);
     }
 }
