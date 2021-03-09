@@ -88,7 +88,7 @@ public class Notification implements Serializable {
         this.message = message;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     public Date getDate() {
         return date;
     }
