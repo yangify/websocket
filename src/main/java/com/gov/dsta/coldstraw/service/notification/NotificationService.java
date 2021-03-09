@@ -108,14 +108,14 @@ public class NotificationService {
     private Set<NotificationReceiver> mergeReceivers(Notification notification) {
         Set<NotificationReceiver> allReceivers = notification.getReceivers();
         Set<Group> groups = notification.getGroups();
-        if (!groups.isEmpty()) groups.forEach(group -> {
-            group.getUsers().forEach(user -> {
+        if (groups.isEmpty()) return allReceivers;
+        groups.forEach(group -> group.getUsers().forEach(user -> {
                 NotificationReceiver nr = new NotificationReceiver()
                         .setReceiver(user)
                         .setNotification(notification);
                 allReceivers.add(nr);
-            });
-        });
+            })
+        );
         return allReceivers;
     }
 }
