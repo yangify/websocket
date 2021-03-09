@@ -1,8 +1,11 @@
 package com.gov.dsta.coldstraw.controller;
 
+import com.gov.dsta.coldstraw.model.Count;
 import com.gov.dsta.coldstraw.model.Notification;
+import com.gov.dsta.coldstraw.service.ReceiverService;
 import com.gov.dsta.coldstraw.service.notification.NotificationService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -14,10 +17,14 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:3000")
 public class NotificationController {
 
+    private final ReceiverService receiverService;
     private final NotificationService notificationService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public NotificationController(NotificationService notificationService) {
+    public NotificationController(ReceiverService receiverService, NotificationService notificationService, SimpMessagingTemplate simpMessagingTemplate) {
+        this.receiverService = receiverService;
         this.notificationService = notificationService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping()
@@ -44,7 +51,10 @@ public class NotificationController {
 
     @PostMapping()
     public Notification addNotification(@RequestBody Notification notification) {
-        return notificationService.createNotification(notification);
+        Notification savedNotification = notificationService.createNotification(notification);
+        publishNotification(savedNotification);
+        publishCount();
+        return savedNotification;
     }
 
     @PutMapping("/{notificationId}")
@@ -64,5 +74,14 @@ public class NotificationController {
 
     private boolean requireDate(Date startDate, Date endDate) {
         return startDate != null || endDate != null;
+    }
+
+    public void publishNotification(Notification notification) {
+        simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+    }
+
+    public void publishCount() {
+        Count count = receiverService.getCount("Tom");
+        simpMessagingTemplate.convertAndSend("/topic/count", count);
     }
 }

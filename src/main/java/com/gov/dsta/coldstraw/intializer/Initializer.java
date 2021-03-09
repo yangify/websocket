@@ -73,23 +73,23 @@ public class Initializer implements CommandLineRunner {
     }
 
     public void initializeNotification() {
-        Notification today = new Notification();
-        today.setMessage("today");
-        notificationRepository.save(today);
-
-        Notification yesterday = new Notification();
-        yesterday.setMessage("yesterday");
-        yesterday.setDate(new Date(System.currentTimeMillis()-24*60*60*1000));
-        notificationRepository.save(yesterday);
-
-        Notification lastWeek = new Notification();
-        lastWeek.setMessage("last week");
-        lastWeek.setDate(new Date(System.currentTimeMillis()-5*24*60*60*1000));
-        notificationRepository.save(lastWeek);
-
-        Notification longLongTimeAgo = new Notification();
-        longLongTimeAgo.setMessage("long long time ago");
-        longLongTimeAgo.setDate(new Date(System.currentTimeMillis()-14*24*60*60*1000));
-        notificationRepository.save(longLongTimeAgo);
+//        Notification today = new Notification();
+//        today.setMessage("today");
+//        notificationRepository.save(today);
+//
+//        Notification yesterday = new Notification();
+//        yesterday.setMessage("yesterday");
+//        yesterday.setDate(new Date(System.currentTimeMillis()-24*60*60*1000));
+//        notificationRepository.save(yesterday);
+//
+//        Notification lastWeek = new Notification();
+//        lastWeek.setMessage("last week");
+//        lastWeek.setDate(new Date(System.currentTimeMillis()-5*24*60*60*1000));
+//        notificationRepository.save(lastWeek);
+//
+//        Notification longLongTimeAgo = new Notification();
+//        longLongTimeAgo.setMessage("long long time ago");
+//        longLongTimeAgo.setDate(new Date(System.currentTimeMillis()-14*24*60*60*1000));
+//        notificationRepository.save(longLongTimeAgo);
     }
 }
