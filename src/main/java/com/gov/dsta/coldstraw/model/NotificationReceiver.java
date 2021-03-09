@@ -29,7 +29,7 @@ public class NotificationReceiver implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "notification_id")
-    @JsonIgnoreProperties({"id", "receivers", "groups"})
+    @JsonIgnoreProperties(value = {"id", "receivers", "groups"}, allowSetters = true)
     public Notification getNotification() {
         return this.notification;
     }
@@ -41,7 +41,7 @@ public class NotificationReceiver implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"id", "groups", "notificationsSent", "notificationsReceived"})
+    @JsonIgnoreProperties(value = {"id", "groups", "notificationsSent", "notificationsReceived"}, allowSetters = true)
     public User getReceiver() {
         return this.receiver;
     }

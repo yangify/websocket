@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.service;
 
+import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundException;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.model.User;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class NotificationReceiverService {
@@ -92,5 +94,17 @@ public class NotificationReceiverService {
         String username = "Tom";
         User receiver = userService.getUser(username);
         return notificationReceiverRepository.findNotificationReceiverByNotificationAndReceiver(notification, receiver);
+    }
+
+    public NotificationReceiver getNotification(UUID notificationReceiverId) {
+        return notificationReceiverRepository
+                .findById(notificationReceiverId)
+                .orElseThrow(() -> new NotificationNotFoundException(notificationReceiverId));
+    }
+
+    public NotificationReceiver updateNotification(UUID notificationReceiverId, NotificationReceiver notificationReceiver) {
+        NotificationReceiver ogNotificationReceiver = getNotification(notificationReceiverId);
+        ogNotificationReceiver.setRead(notificationReceiver.isRead());
+        return notificationReceiverRepository.save(ogNotificationReceiver);
     }
 }
