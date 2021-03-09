@@ -1,18 +1,20 @@
 package com.gov.dsta.coldstraw.service.notification;
 
 import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundException;
-import com.gov.dsta.coldstraw.model.*;
+import com.gov.dsta.coldstraw.model.Group;
+import com.gov.dsta.coldstraw.model.Notification;
+import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.repository.NotificationReceiverRepository;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
-import com.gov.dsta.coldstraw.service.GroupService;
-import com.gov.dsta.coldstraw.service.ModuleService;
-import com.gov.dsta.coldstraw.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class NotificationService {
