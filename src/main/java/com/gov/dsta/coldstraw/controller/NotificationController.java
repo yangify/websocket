@@ -64,7 +64,9 @@ public class NotificationController {
     @PutMapping("/{notificationReceiverId}")
     public NotificationReceiver updateNotification(@PathVariable UUID notificationReceiverId,
                                                    @RequestBody NotificationReceiver notificationReceiver) {
-        return notificationReceiverService.updateNotification(notificationReceiverId, notificationReceiver);
+        NotificationReceiver savedNotificationReceiver = notificationReceiverService.updateNotification(notificationReceiverId, notificationReceiver);
+        publishCount();
+        return savedNotificationReceiver;
     }
 
     @DeleteMapping("/{notificationId}")
