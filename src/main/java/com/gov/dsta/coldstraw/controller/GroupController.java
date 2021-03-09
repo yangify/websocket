@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/v1/groups")
+@RequestMapping("/api/v1/groups")
 public class GroupController {
 
     private final GroupService groupService;
