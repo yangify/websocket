@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "http://localhost:3000")
-public class ReceiverController {
+public class NotificationReceiverController {
 
     private final CountService countService;
 
-    public ReceiverController(CountService countService) {
+    public NotificationReceiverController(CountService countService) {
         this.countService = countService;
     }
 
