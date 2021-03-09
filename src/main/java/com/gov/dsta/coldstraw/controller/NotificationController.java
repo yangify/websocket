@@ -10,7 +10,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -82,7 +81,9 @@ public class NotificationController {
     }
 
     public void publishNotification(Notification notification) {
-        simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+        // TODO update to use user context
+        NotificationReceiver notificationReceiver = notificationReceiverService.getNotification(notification);
+        simpMessagingTemplate.convertAndSend("/topic/notifications", notificationReceiver);
     }
 
     public void publishCount() {

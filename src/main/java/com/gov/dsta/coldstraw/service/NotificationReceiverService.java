@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.service;
 
+import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.model.User;
 import com.gov.dsta.coldstraw.repository.NotificationReceiverRepository;
@@ -84,5 +85,12 @@ public class NotificationReceiverService {
     public List<NotificationReceiver> getNotificationsBetween(Date start, Date end) {
         User receiver = userService.getUser(username);
         return notificationReceiverRepository.findNotificationReceiversByReceiverAndNotification_DateBetween(receiver, start, end);
+    }
+
+    public NotificationReceiver getNotification(Notification notification) {
+        // TODO update to use user context
+        String username = "Tom";
+        User receiver = userService.getUser(username);
+        return notificationReceiverRepository.findNotificationReceiverByNotificationAndReceiver(notification, receiver);
     }
 }

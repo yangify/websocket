@@ -1,5 +1,6 @@
 package com.gov.dsta.coldstraw.repository;
 
+import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.model.User;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,8 @@ import java.util.UUID;
 
 @Repository
 public interface NotificationReceiverRepository extends CrudRepository<NotificationReceiver, UUID>, PagingAndSortingRepository<NotificationReceiver, UUID> {
+
+    NotificationReceiver findNotificationReceiverByNotificationAndReceiver(Notification notification, User receiver);
 
     List<NotificationReceiver> findNotificationReceiverByReceiver(User receiver);
 
