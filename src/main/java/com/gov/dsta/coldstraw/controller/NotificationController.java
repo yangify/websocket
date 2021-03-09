@@ -2,12 +2,15 @@ package com.gov.dsta.coldstraw.controller;
 
 import com.gov.dsta.coldstraw.model.Count;
 import com.gov.dsta.coldstraw.model.Notification;
+import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.service.CountService;
+import com.gov.dsta.coldstraw.service.NotificationReceiverService;
 import com.gov.dsta.coldstraw.service.notification.NotificationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -19,29 +22,31 @@ public class NotificationController {
 
     private final CountService countService;
     private final NotificationService notificationService;
+    private final NotificationReceiverService notificationReceiverService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public NotificationController(CountService countService, NotificationService notificationService, SimpMessagingTemplate simpMessagingTemplate) {
+    public NotificationController(CountService countService, NotificationService notificationService, NotificationReceiverService notificationReceiverService, SimpMessagingTemplate simpMessagingTemplate) {
         this.countService = countService;
         this.notificationService = notificationService;
+        this.notificationReceiverService = notificationReceiverService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping()
-    public List<Notification> getNotifications(@RequestParam(required = false) Integer page,
-                                               @RequestParam(required = false) Integer size,
-                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
-        if (requireDate(startDate, endDate) && requirePagination(page, size))
-            return notificationService.getNotificationsByDateAndPage(startDate, endDate, page, size);
+    public List<NotificationReceiver> getNotifications(@RequestParam(required = false) Integer page,
+                                                       @RequestParam(required = false) Integer size,
+                                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
+                                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+        if (requireDate(start, end) && requirePagination(page, size))
+            return notificationReceiverService.getNotificationsByDateAndPage(start, end, page, size);
 
-        if (requireDate(startDate, endDate))
-            return notificationService.getNotificationsByDate(startDate, endDate, null);
+        if (requireDate(start, end))
+            return notificationReceiverService.getNotificationsByDate(start, end, null);
 
         if (requirePagination(page, size))
-            return notificationService.getNotificationsByPage(page, size);
+            return notificationReceiverService.getNotificationsByPage(page, size);
 
-        return notificationService.getNotifications();
+        return notificationReceiverService.getNotifications();
     }
 
     @GetMapping("/{notificationId}")
