@@ -95,7 +95,7 @@ public class NotificationService {
     public Notification createNotification(Notification notification) {
         notificationCreator.create(notification);
         Notification savedNotification = notificationRepository.save(notification);
-        savedNotification.getReceivers().forEach(notificationReceiverRepository::save);
+        mergeReceivers(notification).forEach(notificationReceiverRepository::save);
         return savedNotification;
     }
 
@@ -103,5 +103,19 @@ public class NotificationService {
         Notification originalNotification = getNotification(notificationId);
         notificationUpdater.updateReadStatus(originalNotification, notification);
         return notificationRepository.save(originalNotification);
+    }
+
+    private Set<NotificationReceiver> mergeReceivers(Notification notification) {
+        Set<NotificationReceiver> allReceivers = notification.getReceivers();
+        Set<Group> groups = notification.getGroups();
+        if (!groups.isEmpty()) groups.forEach(group -> {
+            group.getUsers().forEach(user -> {
+                NotificationReceiver nr = new NotificationReceiver()
+                        .setReceiver(user)
+                        .setNotification(notification);
+                allReceivers.add(nr);
+            });
+        });
+        return allReceivers;
     }
 }

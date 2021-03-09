@@ -34,8 +34,9 @@ public class NotificationReceiver implements Serializable {
         return this.notification;
     }
 
-    public void setNotification(Notification notification) {
+    public NotificationReceiver setNotification(Notification notification) {
         this.notification= notification;
+        return this;
     }
 
     @ManyToOne()
@@ -45,8 +46,9 @@ public class NotificationReceiver implements Serializable {
         return this.receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public NotificationReceiver setReceiver(User receiver) {
         this.receiver = receiver;
+        return this;
     }
 
     @NotNull
