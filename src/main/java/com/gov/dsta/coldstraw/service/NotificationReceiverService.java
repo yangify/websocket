@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ReceiverService {
+public class NotificationReceiverService {
 
     private final UserService userService;
     private final NotificationReceiverRepository notificationReceiverRepository;
 
-    public ReceiverService(UserService userService, NotificationReceiverRepository notificationReceiverRepository) {
+    public NotificationReceiverService(UserService userService, NotificationReceiverRepository notificationReceiverRepository) {
         this.userService = userService;
         this.notificationReceiverRepository = notificationReceiverRepository;
     }
