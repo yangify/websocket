@@ -29,7 +29,7 @@ public class NotificationReceiver implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "notification_id")
-    @JsonIgnoreProperties({"module", "receivers", "groups"})
+    @JsonIgnoreProperties({"id", "receivers", "groups"})
     public Notification getNotification() {
         return this.notification;
     }
