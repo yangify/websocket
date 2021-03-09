@@ -107,4 +107,8 @@ public class NotificationReceiverService {
         ogNotificationReceiver.setRead(notificationReceiver.isRead());
         return notificationReceiverRepository.save(ogNotificationReceiver);
     }
+
+    public void deleteNotificationReceiver(UUID notificationReceiverId) {
+        notificationReceiverRepository.deleteById(notificationReceiverId);
+    }
 }

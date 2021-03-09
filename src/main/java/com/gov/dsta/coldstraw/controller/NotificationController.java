@@ -69,9 +69,10 @@ public class NotificationController {
         return savedNotificationReceiver;
     }
 
-    @DeleteMapping("/{notificationId}")
-    public void deleteNotification(@PathVariable Long notificationId) {
+    @DeleteMapping("/{notificationReceiverId}")
+    public void deleteNotification(@PathVariable UUID notificationReceiverId) {
         // delete notification from receiver
+        notificationReceiverService.deleteNotificationReceiver(notificationReceiverId);
     }
 
     private boolean requirePagination(Integer page, Integer size) {
