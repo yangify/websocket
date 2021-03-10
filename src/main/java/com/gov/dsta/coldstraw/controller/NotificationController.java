@@ -35,7 +35,8 @@ public class NotificationController {
     public List<NotificationReceiver> getNotifications(@RequestParam(required = false) Integer page,
                                                        @RequestParam(required = false) Integer size,
                                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
-                                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+                                                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) throws InterruptedException {
+        Thread.sleep(1000);
         if (requireDate(start, end) && requirePagination(page, size))
             return notificationReceiverService.getNotificationsByDateAndPage(start, end, page, size);
 
