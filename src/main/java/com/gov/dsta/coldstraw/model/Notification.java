@@ -34,7 +34,7 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-//    @NotNull
+    @NotNull
     @ManyToOne()
     @JsonIgnoreProperties(value = {"notifications"}, allowSetters = true)
     public Module getModule() {
@@ -45,7 +45,7 @@ public class Notification implements Serializable {
         this.module = module;
     }
 
-//    @NotNull
+    @NotNull
     @ManyToOne()
     @JsonIgnoreProperties(value = {"id", "groups", "notificationsSent", "notificationsReceived"}, allowSetters = true)
     public User getSender() {

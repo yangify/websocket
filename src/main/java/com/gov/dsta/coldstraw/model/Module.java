@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@JsonIgnoreProperties("id")
+@JsonIgnoreProperties(value = "id", allowSetters = true)
 public class Module {
 
     private UUID id;

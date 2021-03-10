@@ -51,7 +51,7 @@ public class User implements Serializable {
     }
 
     @ManyToMany(mappedBy = "users")
-    @JsonIgnoreProperties({"users", "notifications"})
+    @JsonIgnoreProperties(value = {"users", "notifications"}, allowSetters = true)
     public Set<Group> getGroups() {
         return groups;
     }
@@ -82,7 +82,7 @@ public class User implements Serializable {
     }
 
     @OneToMany(mappedBy = "receiver")
-    @JsonIgnoreProperties({"id", "receiver"})
+    @JsonIgnoreProperties(value = {"id", "receiver"}, allowSetters = true)
     public Set<NotificationReceiver> getNotificationsReceived() {
         return notificationsReceived;
     }
