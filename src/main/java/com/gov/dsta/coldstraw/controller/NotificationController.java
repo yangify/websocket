@@ -62,6 +62,12 @@ public class NotificationController {
         return savedNotification;
     }
 
+    @PutMapping()
+    public void readAllNotification() {
+        notificationReceiverService.readAllNotification();
+        publishCount();
+    }
+
     @PutMapping("/{notificationId}")
     public NotificationReceiver updateNotification(@PathVariable UUID notificationId,
                                                    @RequestBody NotificationReceiver notificationReceiver) {

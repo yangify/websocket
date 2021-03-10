@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -109,6 +110,14 @@ public class NotificationReceiverService {
         NotificationReceiver ogNotificationReceiver = getNotification(notificationReceiverId);
         ogNotificationReceiver.setRead(notificationReceiver.isRead());
         return notificationReceiverRepository.save(ogNotificationReceiver);
+    }
+
+    public void readAllNotification() {
+        List<NotificationReceiver> notificationReceivers = getNotifications();
+        notificationReceivers.forEach(notificationReceiver -> {
+            notificationReceiver.setRead(true);
+            notificationReceiverRepository.save(notificationReceiver);
+        });
     }
 
     public void deleteNotification(UUID notificationId) {
