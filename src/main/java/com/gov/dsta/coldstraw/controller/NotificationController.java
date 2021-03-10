@@ -31,6 +31,12 @@ public class NotificationController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+    @GetMapping("/notifications/count")
+    public Count getCount() {
+        // TODO update to use user context
+        return countService.getCount("Tom");
+    }
+
     @GetMapping()
     public List<NotificationReceiver> getNotifications(@RequestParam(required = false) Integer page,
                                                        @RequestParam(required = false) Integer size,
@@ -97,13 +103,12 @@ public class NotificationController {
     }
 
     public void publishNotification(Notification notification) {
-        // TODO update to use user context
         NotificationReceiver notificationReceiver = notificationReceiverService.getNotification(notification);
         simpMessagingTemplate.convertAndSend("/topic/notifications", notificationReceiver);
     }
 
     public void publishCount() {
-        Count count = countService.getCount("Tom");
+        Count count = countService.getCount();
         simpMessagingTemplate.convertAndSend("/topic/count", count);
     }
 }

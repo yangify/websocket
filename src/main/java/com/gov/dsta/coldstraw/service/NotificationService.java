@@ -7,13 +7,8 @@ import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.repository.NotificationReceiverRepository;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
 import com.gov.dsta.coldstraw.service.notification.NotificationConstructorService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -49,7 +44,8 @@ public class NotificationService {
         Set<NotificationReceiver> allReceivers = notification.getReceivers();
         Set<Group> groups = notification.getGroups();
         if (groups.isEmpty()) return allReceivers;
-        groups.forEach(group -> group.getUsers().forEach(user -> {
+        groups.forEach(group ->
+                group.getUsers().forEach(user -> {
                     NotificationReceiver nr = new NotificationReceiver()
                             .setReceiver(user)
                             .setNotification(notification);

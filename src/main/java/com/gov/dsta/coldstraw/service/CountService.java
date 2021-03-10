@@ -18,6 +18,11 @@ public class CountService {
         this.notificationReceiverRepository = notificationReceiverRepository;
     }
 
+    public Count getCount() {
+        // TODO update to use user context
+        return getCount("Tom");
+    }
+
     public Count getCount(UUID receiverId) {
         User receiver = userService.getUser(receiverId);
         return getCount(receiver);

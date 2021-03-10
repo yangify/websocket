@@ -91,14 +91,12 @@ public class NotificationReceiverService {
     }
 
     public NotificationReceiver getNotification(Notification notification) {
-        // TODO update to use user context
-        String username = "Tom";
         User receiver = userService.getUser(username);
         return notificationReceiverRepository.findNotificationReceiverByNotificationAndReceiver(notification, receiver);
     }
 
     public NotificationReceiver getNotification(UUID notificationId) {
-        User receiver = userService.getUser("Tom");
+        User receiver = userService.getUser(username);
         NotificationReceiverId id = new NotificationReceiverId(receiver.getId(), notificationId);
         return notificationReceiverRepository
                 .findById(id)
@@ -124,7 +122,7 @@ public class NotificationReceiverService {
     }
 
     public void deleteNotification(UUID notificationId) {
-        User receiver = userService.getUser("Tom");
+        User receiver = userService.getUser(username);
         NotificationReceiverId id = new NotificationReceiverId(receiver.getId(), notificationId);
         notificationReceiverRepository.deleteById(id);
     }
