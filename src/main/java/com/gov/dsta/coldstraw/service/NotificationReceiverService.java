@@ -4,6 +4,7 @@ import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundExcepti
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.model.User;
+import com.gov.dsta.coldstraw.model.embeddable.NotificationReceiverId;
 import com.gov.dsta.coldstraw.repository.NotificationReceiverRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -96,10 +97,12 @@ public class NotificationReceiverService {
         return notificationReceiverRepository.findNotificationReceiverByNotificationAndReceiver(notification, receiver);
     }
 
-    public NotificationReceiver getNotification(UUID notificationReceiverId) {
+    public NotificationReceiver getNotification(UUID notificationId) {
+        User receiver = userService.getUser("Tom");
+        NotificationReceiverId id = new NotificationReceiverId(receiver.getId(), notificationId);
         return notificationReceiverRepository
-                .findById(notificationReceiverId)
-                .orElseThrow(() -> new NotificationNotFoundException(notificationReceiverId));
+                .findById(id)
+                .orElseThrow(() -> new NotificationNotFoundException(notificationId));
     }
 
     public NotificationReceiver updateNotification(UUID notificationReceiverId, NotificationReceiver notificationReceiver) {
@@ -108,7 +111,9 @@ public class NotificationReceiverService {
         return notificationReceiverRepository.save(ogNotificationReceiver);
     }
 
-    public void deleteNotificationReceiver(UUID notificationReceiverId) {
-        notificationReceiverRepository.deleteById(notificationReceiverId);
+    public void deleteNotification(UUID notificationId) {
+        User receiver = userService.getUser("Tom");
+        NotificationReceiverId id = new NotificationReceiverId(receiver.getId(), notificationId);
+        notificationReceiverRepository.deleteById(id);
     }
 }

@@ -13,6 +13,11 @@ public class NotificationReceiverId implements Serializable {
 
     public NotificationReceiverId() { }
 
+    public NotificationReceiverId(UUID receiverId, UUID notificationId) {
+        this.receiverId = receiverId;
+        this.notificationId = notificationId;
+    }
+
     public UUID getReceiverId() {
         return receiverId;
     }
