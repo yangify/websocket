@@ -72,6 +72,7 @@ public class NotificationController {
     @DeleteMapping("/{notificationId}")
     public void deleteNotification(@PathVariable UUID notificationId) {
         notificationReceiverService.deleteNotification(notificationId);
+        publishCount();
     }
 
     private boolean requirePagination(Integer page, Integer size) {
