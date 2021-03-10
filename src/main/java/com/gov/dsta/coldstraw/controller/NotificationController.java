@@ -76,6 +76,12 @@ public class NotificationController {
         return savedNotificationReceiver;
     }
 
+    @DeleteMapping()
+    public void deleteAllNotification() {
+        notificationReceiverService.deleteAllNotification();
+        publishCount();
+    }
+
     @DeleteMapping("/{notificationId}")
     public void deleteNotification(@PathVariable UUID notificationId) {
         notificationReceiverService.deleteNotification(notificationId);

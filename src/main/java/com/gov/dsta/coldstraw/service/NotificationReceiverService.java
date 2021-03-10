@@ -120,6 +120,10 @@ public class NotificationReceiverService {
         });
     }
 
+    public void deleteAllNotification() {
+        notificationReceiverRepository.deleteAll();
+    }
+
     public void deleteNotification(UUID notificationId) {
         User receiver = userService.getUser("Tom");
         NotificationReceiverId id = new NotificationReceiverId(receiver.getId(), notificationId);
