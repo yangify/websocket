@@ -5,7 +5,7 @@ import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.service.CountService;
 import com.gov.dsta.coldstraw.service.NotificationReceiverService;
-import com.gov.dsta.coldstraw.service.notification.NotificationService;
+import com.gov.dsta.coldstraw.service.NotificationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;

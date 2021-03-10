@@ -11,13 +11,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class NotificationCreator {
+public class NotificationConstructorService {
 
     private final GroupService groupService;
     private final ModuleService moduleService;
     private final UserService userService;
 
-    public NotificationCreator(GroupService groupService, ModuleService moduleService, UserService userService) {
+    public NotificationConstructorService(GroupService groupService, ModuleService moduleService, UserService userService) {
         this.groupService = groupService;
         this.moduleService = moduleService;
         this.userService = userService;

@@ -1,4 +1,4 @@
-package com.gov.dsta.coldstraw.service.notification;
+package com.gov.dsta.coldstraw.service;
 
 import com.gov.dsta.coldstraw.exception.notification.NotificationNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
@@ -6,6 +6,7 @@ import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.model.NotificationReceiver;
 import com.gov.dsta.coldstraw.repository.NotificationReceiverRepository;
 import com.gov.dsta.coldstraw.repository.NotificationRepository;
+import com.gov.dsta.coldstraw.service.notification.NotificationConstructorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,18 +20,15 @@ import java.util.UUID;
 @Service
 public class NotificationService {
 
-    private final NotificationCreator notificationCreator;
-    private final NotificationUpdater notificationUpdater;
+    private final NotificationConstructorService notificationConstructorService;
     private final NotificationRepository notificationRepository;
     private final NotificationReceiverRepository notificationReceiverRepository;
 
-    public NotificationService(NotificationCreator notificationCreator,
-                               NotificationUpdater notificationUpdater,
+    public NotificationService(NotificationConstructorService notificationConstructorService,
                                NotificationRepository notificationRepository,
                                NotificationReceiverRepository notificationReceiverRepository) {
 
-        this.notificationCreator = notificationCreator;
-        this.notificationUpdater = notificationUpdater;
+        this.notificationConstructorService = notificationConstructorService;
         this.notificationRepository = notificationRepository;
         this.notificationReceiverRepository = notificationReceiverRepository;
     }
@@ -95,17 +93,11 @@ public class NotificationService {
     }
 
     public Notification createNotification(Notification notification) {
-        notificationCreator.create(notification);
+        notificationConstructorService.create(notification);
         Notification savedNotification = notificationRepository.save(notification);
         Set<NotificationReceiver> receivers = mergeGroupsAndReceivers(savedNotification);
         receivers.forEach(notificationReceiverRepository::save);
         return savedNotification;
-    }
-
-    public Notification updateNotification(UUID notificationId, Notification notification) {
-        Notification originalNotification = getNotification(notificationId);
-        notificationUpdater.updateReadStatus(originalNotification, notification);
-        return notificationRepository.save(originalNotification);
     }
 
     private Set<NotificationReceiver> mergeGroupsAndReceivers(Notification notification) {
