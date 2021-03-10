@@ -3,7 +3,6 @@ package com.gov.dsta.coldstraw.validator.parameter;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @Component
 public class NotificationParameterValidator {

@@ -32,7 +32,6 @@ public class NotificationInterceptor implements HandlerInterceptor {
                            Object handler,
                            ModelAndView modelAndView)
             throws Exception {
-        System.out.println("Inside the Post Handle method");
     }
 
     @Override
@@ -41,11 +40,5 @@ public class NotificationInterceptor implements HandlerInterceptor {
                                 Object handler,
                                 Exception exception)
             throws Exception {
-        System.out.println("After completion of request and response");
     }
-
-
 }
-//        if (page == null && size == null) return getNotifications();
-//        if (page == null) throw new IllegalArgumentException("Page cannot be null when size is provided");
-//        if (size == null) throw new IllegalArgumentException("Size cannot be null when page is provided");
