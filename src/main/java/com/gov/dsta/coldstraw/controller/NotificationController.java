@@ -31,7 +31,7 @@ public class NotificationController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
-    @GetMapping("/notifications/count")
+    @GetMapping("/count")
     public Count getCount() {
         // TODO update to use user context
         return countService.getCount("Tom");
