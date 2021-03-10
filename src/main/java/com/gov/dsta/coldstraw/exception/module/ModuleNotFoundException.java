@@ -1,4 +1,4 @@
-package com.gov.dsta.coldstraw.exception.Module;
+package com.gov.dsta.coldstraw.exception.module;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

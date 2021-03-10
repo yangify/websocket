@@ -1,6 +1,6 @@
 package com.gov.dsta.coldstraw.service;
 
-import com.gov.dsta.coldstraw.exception.Module.ModuleNotFoundException;
+import com.gov.dsta.coldstraw.exception.module.ModuleNotFoundException;
 import com.gov.dsta.coldstraw.model.Module;
 import com.gov.dsta.coldstraw.model.Notification;
 import com.gov.dsta.coldstraw.repository.ModuleRepository;

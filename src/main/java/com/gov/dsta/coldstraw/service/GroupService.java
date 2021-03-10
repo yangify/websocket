@@ -1,6 +1,6 @@
 package com.gov.dsta.coldstraw.service;
 
-import com.gov.dsta.coldstraw.exception.Group.GroupNotFoundException;
+import com.gov.dsta.coldstraw.exception.group.GroupNotFoundException;
 import com.gov.dsta.coldstraw.exception.user.UserNotFoundException;
 import com.gov.dsta.coldstraw.model.Group;
 import com.gov.dsta.coldstraw.model.User;
