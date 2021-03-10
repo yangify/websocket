@@ -36,7 +36,7 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsByDateAndPage(Date startDate, Date endDate,
-                                                            Integer page,   Integer size) {
+                                                            Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         return getNotificationsByDate(startDate, endDate, pageable);
     }
@@ -47,9 +47,9 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsByDate(Date start, Date end, Pageable pageable) {
-        if (start == null && end == null)   return getNotifications(pageable);
-        if (start == null)                  return getNotificationsBefore(end, pageable);
-        if (end == null)                    return getNotificationsAfter(start, pageable);
+        if (start == null && end == null) return getNotifications(pageable);
+        if (start == null) return getNotificationsBefore(end, pageable);
+        if (end == null) return getNotificationsAfter(start, pageable);
         return getNotificationsBetween(start, end, pageable);
     }
 
@@ -97,7 +97,8 @@ public class NotificationService {
     public Notification createNotification(Notification notification) {
         notificationCreator.create(notification);
         Notification savedNotification = notificationRepository.save(notification);
-        mergeReceivers(notification).forEach(notificationReceiverRepository::save);
+        Set<NotificationReceiver> receivers = mergeGroupsAndReceivers(savedNotification);
+        receivers.forEach(notificationReceiverRepository::save);
         return savedNotification;
     }
 
@@ -107,16 +108,16 @@ public class NotificationService {
         return notificationRepository.save(originalNotification);
     }
 
-    private Set<NotificationReceiver> mergeReceivers(Notification notification) {
+    private Set<NotificationReceiver> mergeGroupsAndReceivers(Notification notification) {
         Set<NotificationReceiver> allReceivers = notification.getReceivers();
         Set<Group> groups = notification.getGroups();
         if (groups.isEmpty()) return allReceivers;
         groups.forEach(group -> group.getUsers().forEach(user -> {
-                NotificationReceiver nr = new NotificationReceiver()
-                        .setReceiver(user)
-                        .setNotification(notification);
-                allReceivers.add(nr);
-            })
+                    NotificationReceiver nr = new NotificationReceiver()
+                            .setReceiver(user)
+                            .setNotification(notification);
+                    allReceivers.add(nr);
+                })
         );
         return allReceivers;
     }

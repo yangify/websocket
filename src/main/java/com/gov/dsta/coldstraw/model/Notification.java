@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
+@JsonIgnoreProperties(value = {"groups"}, allowSetters = true)
 public class Notification implements Serializable {
 
     private UUID id;
@@ -35,7 +36,7 @@ public class Notification implements Serializable {
 
 //    @NotNull
     @ManyToOne()
-    @JsonIgnoreProperties({"notifications"})
+    @JsonIgnoreProperties(value = {"notifications"}, allowSetters = true)
     public Module getModule() {
         return module;
     }
@@ -46,7 +47,7 @@ public class Notification implements Serializable {
 
 //    @NotNull
     @ManyToOne()
-    @JsonIgnoreProperties({"id", "groups", "notificationsSent", "notificationsReceived"})
+    @JsonIgnoreProperties(value = {"id", "groups", "notificationsSent", "notificationsReceived"}, allowSetters = true)
     public User getSender() {
         return sender;
     }
@@ -56,7 +57,7 @@ public class Notification implements Serializable {
     }
 
     @OneToMany(mappedBy = "notification")
-    @JsonIgnoreProperties({"id", "notification", "deleted"})
+    @JsonIgnoreProperties(value = {"id", "notification", "deleted"}, allowSetters = true)
     public Set<NotificationReceiver> getReceivers() {
         return receivers;
     }
@@ -65,12 +66,12 @@ public class Notification implements Serializable {
         this.receivers = receivers;
     }
 
+    @ManyToMany()
     @JoinTable(
             name = "notification_group",
             joinColumns = @JoinColumn(name = "notification_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    @ManyToMany()
-    @JsonIgnoreProperties({"notifications", "users"})
+    @JsonIgnoreProperties(value = {"notifications", "users"}, allowSetters = true)
     public Set<Group> getGroups() {
         return this.groups;
     }

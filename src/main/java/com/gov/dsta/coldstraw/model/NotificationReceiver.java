@@ -1,34 +1,40 @@
 package com.gov.dsta.coldstraw.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gov.dsta.coldstraw.model.embeddable.NotificationReceiverId;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 public class NotificationReceiver implements Serializable {
 
-    private UUID id;
+    private NotificationReceiverId id;
     private User receiver;
     private Notification notification;
     private boolean isRead = false;
     private boolean isDeleted = false;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public UUID getId() {
+    public NotificationReceiver() {
+        this.id = new NotificationReceiverId();
+    }
+
+    @EmbeddedId
+    public NotificationReceiverId getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(NotificationReceiverId id) {
         this.id = id;
     }
 
     @ManyToOne()
-    @JoinColumn(name = "notification_id")
+    @MapsId("notificationId")
     @JsonIgnoreProperties(value = {"id", "receivers", "groups"}, allowSetters = true)
     public Notification getNotification() {
         return this.notification;
@@ -36,11 +42,12 @@ public class NotificationReceiver implements Serializable {
 
     public NotificationReceiver setNotification(Notification notification) {
         this.notification= notification;
+        this.id.setNotificationId(notification.getId());
         return this;
     }
 
     @ManyToOne()
-    @JoinColumn(name = "user_id")
+    @MapsId("receiverId")
     @JsonIgnoreProperties(value = {"id", "groups", "notificationsSent", "notificationsReceived"}, allowSetters = true)
     public User getReceiver() {
         return this.receiver;
@@ -48,6 +55,7 @@ public class NotificationReceiver implements Serializable {
 
     public NotificationReceiver setReceiver(User receiver) {
         this.receiver = receiver;
+        this.id.setReceiverId(receiver.getId());
         return this;
     }
 
