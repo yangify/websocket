@@ -18,7 +18,7 @@ public class CountController {
         this.countService = countService;
     }
 
-    @GetMapping("/count")
+    @GetMapping()
     public Count getCount() {
         // TODO update to use user context
         return countService.getCount("Tom");

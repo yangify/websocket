@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/notification/receiver")
+@RequestMapping("/api/v1/notifications/receivers")
 @CrossOrigin(origins = "http://localhost:3000")
 public class NotificationReceiverController {
 
