@@ -1,13 +1,12 @@
 package com.gov.dsta.coldstraw.intializer;
 
 import com.github.javafaker.Faker;
-import com.gov.dsta.coldstraw.model.*;
 import com.gov.dsta.coldstraw.model.Module;
+import com.gov.dsta.coldstraw.model.*;
 import com.gov.dsta.coldstraw.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -25,9 +24,9 @@ public class Initializer implements CommandLineRunner {
                        ModuleRepository moduleRepository,
                        NotificationRepository notificationRepository,
                        NotificationReceiverRepository notificationReceiverRepository, UserRepository userRepository) {
-        this.notificationReceiverRepository = notificationReceiverRepository;
 
         this.faker = new Faker();
+        this.notificationReceiverRepository = notificationReceiverRepository;
         this.groupRepository = groupRepository;
         this.moduleRepository = moduleRepository;
         this.notificationRepository = notificationRepository;
@@ -72,12 +71,12 @@ public class Initializer implements CommandLineRunner {
     }
 
     public void initializeNotification() {
-        for (int i = 0; i< 30; i++) {
+        for (int i = 0; i< 50; i++) {
             Date date = new Date();
 
             Module savedModule = moduleRepository.findByName("Facebook").get();
 
-            String senderName = faker.backToTheFuture().character();
+            String senderName = "Page " + Math.floorDiv(i, 10);
             Optional<User> optionalUser = userRepository.findByName(senderName);
             User savedSender = optionalUser.orElseGet(() -> userRepository.save(new User(senderName)));
 
