@@ -8,6 +8,7 @@ import com.gov.dsta.coldstraw.model.embeddable.NotificationReceiverId;
 import com.gov.dsta.coldstraw.repository.NotificationReceiverRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -30,12 +31,12 @@ public class NotificationReceiverService {
 
     public List<NotificationReceiver> getNotificationsByDateAndPage(Date start, Date end,
                                                                     Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "notification.date"));
         return getNotificationsByDate(start, end, pageable);
     }
 
     public List<NotificationReceiver> getNotificationsByPage(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "notification.date"));
         return getNotifications(pageable);
     }
 
