@@ -81,6 +81,7 @@ public class Notification implements Serializable {
     }
 
     @NotNull
+    @Column(columnDefinition="TEXT")
     public String getMessage() {
         return message;
     }
