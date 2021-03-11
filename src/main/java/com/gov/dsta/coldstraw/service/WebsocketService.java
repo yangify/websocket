@@ -23,7 +23,7 @@ public class WebsocketService {
     }
 
     public void publishNotification(Notification notification) {
-        NotificationReceiver notificationReceiver = notificationReceiverService.getNotification(notification);
+        NotificationReceiver notificationReceiver = notificationReceiverService.getNotificationReceiver(notification);
         simpMessagingTemplate.convertAndSend("/topic/notifications", notificationReceiver);
     }
 
